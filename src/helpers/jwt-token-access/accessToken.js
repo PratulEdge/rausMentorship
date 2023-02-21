@@ -1,0 +1,9 @@
+const accessToken =
+// "token 178f59445cbc41ebbb4ec3cbc6b2f5f5b294bd39"
+  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6ImFkbWluIiwiYWRtaW4iOnRydWUsImp0aSI6ImQ2MTEwYzAxLWMwYjUtNDUzNy1iNDZhLTI0NTk5Mjc2YjY1NiIsImlhdCI6MTU5MjU2MDk2MCwiZXhwIjoxNTkyNTY0NjE5fQ.QgFSQtFaK_Ktauadttq1Is7f9w0SUtKcL8xCmkAvGLw1"
+
+const nodeApiToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNWQwOTUyNTU3NThiYjM0YWU4YzAyZSIsImlhdCI6MTY2MjAwNzk0MSwiZXhwIjoxNjY5NzgzOTQxfQ.a2lluJh51ioMmaTY8GDxEtDjcOkavEyFKEvnrgL1mvA"
+// const nodeApiToken ="token 178f59445cbc41ebbb4ec3cbc6b2f5f5b294bd39"
+
+// export { accessToken }
+export { accessToken, nodeApiToken }

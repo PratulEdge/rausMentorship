@@ -1,0 +1,3 @@
+export const A_SESSION = "A_SESSION"
+export const A_SESSION_SUCCESS = "A_SESSION_SUCCESS"
+export const A_SESSION_API_ERROR = "A_SESSION_API_ERROR"
