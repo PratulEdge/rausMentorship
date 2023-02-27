@@ -1,7 +1,7 @@
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
 // Login Redux States
-import { BOOK_SESSION } from "./actionTypes";
+import { STU_BOOK_SESSION } from "./actionTypes";
 import { sessionBookingApiError, sessionBookingSuccess } from "./actions";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,7 +14,6 @@ import {
   postSocialLogin,
 } from "../../../helpers/fakebackend_helper";
 import { sessionBook } from "../../../API/auth";
-import { mentorCreate } from "../../../API/auth";
 
 const fireBaseBackend = getFirebaseBackend();
 
@@ -63,7 +62,7 @@ function* sessionBooking({ payload: { user, history } }) {
 }
 
 function* sessionBookAuthSaga() {
-  yield takeEvery(BOOK_SESSION , sessionBooking);
+  yield takeEvery(STU_BOOK_SESSION , sessionBooking);
 }
 
 export default sessionBookAuthSaga;

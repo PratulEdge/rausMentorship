@@ -322,7 +322,7 @@ const Navdata = () => {
                     parentId: "pages",
                     stateVariables: isSession,
                     childItems: [
-                        { id: 1, label: "Student Report", link: "/session-list", parentId: "pages" },
+                        { id: 1, label: "Student Report", link: "/student_lists", parentId: "pages" },
                         { id: 2, label: "Mentor Report", link: "/session-list", parentId: "pages" },
                         { id: 3, label: "Session Report", link: "/session-list", parentId: "pages" },
                         { id: 4, label: "Over All Report", link: "/upcoming-sessions", parentId: "pages" },

@@ -14,6 +14,9 @@ import { deleteSession } from '../../../../../store/actions';
 
 const StudentProfileSessionData = (props) => {
     const dispatch = useDispatch();
+
+    const [activeFilter, setActiveFilter] = useState('');
+    const [session_data, setsession_data] = useState([])
     const [modal_center, setmodal_center] = useState(false);
 
     const [modal_varying2, setmodal_varying2] = useState(false);
@@ -40,16 +43,28 @@ const StudentProfileSessionData = (props) => {
     }));
 
     console.log(assignedSession , "session data")
-    const data = assignedSession.map(((list, index) =>
+
+    const filteredData = session_data.filter(row =>
+        (activeFilter === 'All' || String(row.status).toLowerCase().includes(activeFilter.toLowerCase()))
+    );
+
+    const data = filteredData.map(((list, index) =>
         [
             list.serial = index + 1,
-            list.student_name,
+            list.mentor_name,
             new Date(list.schedule_date_time).toLocaleDateString('en-US'),
             new Date(list.schedule_date_time).toLocaleTimeString('en-US'),
             list.status,
             list.session_id
         ]
     ));
+
+
+    useEffect(() => {
+        setsession_data(assignedSession);
+    }, [assignedSession])
+
+
 
     const validation = useFormik({
         enableReinitialize: true,
@@ -77,9 +92,21 @@ const StudentProfileSessionData = (props) => {
     return (
         <React.Fragment>
             <ToastContainer closeButton={false} />
+            <Col xs={5} xxl={2} lg={3} className="status-filter">
+                <select className="form-control align-filter" data-choices data-choices-search-false name="choices-single-default2"
+                    id="choices-single-default2"
+                    onChange={(e) => setActiveFilter(e.target.value)}
+                    value={activeFilter}
+                >
+                    <option value="All">All</option>
+                    <option value="1">Schedule</option>
+                    <option value="4">Completed</option>
+                    <option value="5">Canceled</option>
+                </select>
+            </Col>
             <Grid
                 data={data}
-                columns={["ID", "Student Name", 'Session Date', "Session Time",
+                columns={["ID", "Mentor Name", 'Session Date', "Session Time",
                     {
                         name: "Status",
                         formatter: (cell) => {

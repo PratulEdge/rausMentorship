@@ -12,13 +12,15 @@ import { studentSession } from '../../../../store/actions';
 import { deleteSession } from '../../../../store/actions';
 
 
-const MentorProfileSessionData = () => {
+const MentorProfileSessionData = (props) => {
     const dispatch = useDispatch();
 
     const [sessionFilter, setSessionFilter] = useState([])
+    const [activeFilter, setActiveFilter] = useState('');
     const [Session_id_value, setsession_id_value] = useState()
     const [modal_varying2, setmodal_varying2] = useState(false);
     const [modal_center, setmodal_center] = useState(false);
+    const [session_data, setsession_data] = useState([])
     function tog_center() {
         setmodal_center(!modal_center);
     }
@@ -38,7 +40,10 @@ const MentorProfileSessionData = () => {
         setmodal_varying2(!modal_varying2);
     }
     console.log(assignedSession , "session data")
-    const data = assignedSession.map(((list, index) =>
+    const filteredData = session_data.filter(row =>
+        (activeFilter === 'All' || String(row.status).toLowerCase().includes(activeFilter.toLowerCase()))
+    );
+    const data = filteredData.map(((list, index) =>
         [
             list.serial = index + 1,
             list.student_name,
@@ -48,6 +53,11 @@ const MentorProfileSessionData = () => {
             list.session_id
         ]
     ));
+
+    useEffect(() => {
+        setsession_data(assignedSession);
+    }, [assignedSession])
+
 
     const validation = useFormik({
         enableReinitialize: true,
@@ -75,6 +85,18 @@ const MentorProfileSessionData = () => {
 
     return (
         <React.Fragment>
+             <Col xs={5} xxl={2} lg={3} className="status-filter">
+                <select className="form-control align-filter" data-choices data-choices-search-false name="choices-single-default2"
+                    id="choices-single-default2"
+                    onChange={(e) => setActiveFilter(e.target.value)}
+                    value={activeFilter}
+                >
+                    <option value="All">All</option>
+                    <option value="1">Schedule</option>
+                    <option value="4">Completed</option>
+                    <option value="5">Canceled</option>
+                </select>
+            </Col>
             <Grid
                 data={data}
                 columns={["ID", "Student Name", 'Session Date', "Session Time",

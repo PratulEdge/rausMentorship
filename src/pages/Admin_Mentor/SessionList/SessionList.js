@@ -263,7 +263,7 @@ const SessionList = (props) => {
                                                 options={studentData.map(option => {
                                                     return {
                                                         value: option.id,
-                                                        label: option.first_name + " " + option.last_name + "-" + option.mobile,
+                                                        label: option.name + "-" + option.mobile,
                                                     };
                                                 })}
 

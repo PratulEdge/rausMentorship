@@ -15,15 +15,15 @@ import { format } from 'date-fns'
 import 'react-toastify/dist/ReactToastify.css';
 import { mentorDetail } from '../../../store/actions';
 import { mentorAvailUser } from '../../../store/actions';
+import { msMentorAvailUser } from '../../../store/actions';
 import { subjectExpert } from '../../../store/actions';
+import Ms_Availability from './Availability/mnt_availabilitys';
+import { Ms_AvailabilityData } from './Availability/mnt_availability_datas';
 import { time } from 'echarts';
 
 const Ms_MentorAvailibility = (props) => {
 
   const [selectedOption, setSelectedOption] = useState("");  //category
-  const [mentor_name, setMentor_name] = useState([])
-  const [available_date_time, setAvailable_date_time] = useState('')
-  const [isOpen, setIsOpen] = useState(false)
 
   const [modal_center, setmodal_center] = useState(false);
 
@@ -32,43 +32,11 @@ const Ms_MentorAvailibility = (props) => {
     validation.handleChange(event);
     setSelectedOption(event.target.value);
   };
-  // const handleOptionMentor = (event) => {
-  //   console.log("mentor catogery");
-  //   validation.handleChange(event);
-  //   setSelectedOption(event.target.value);
-  // };
-
   const { subjectExpertData } = useSelector((state) => ({
     subjectExpertData: state.SubjectExpertData.subjectExpertData.detail,
   }));
+  console.log(subjectExpertData, "subjectExpertData")
 
-  const { user } = useSelector(state => ({
-    user: state.mentorAvail.user,
-  }));
-
-  const [activeTab, setActiveTab] = useState();
-
-  const toggleTab = (tab) => {
-    if (activeTab !== tab) {
-      setActiveTab(tab);
-
-    }
-    // setIsOpen(!isOpen);
-  };
-
-  const [is_delete, setIs_delete] = useState(true)
-  function tog_center() {
-    setmodal_center(!modal_center);
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Perform form submission logic
-    setmodal_center(false);
-    setIs_delete(false);
-    console.log(is_delete, "is active value")
-    
-  };
   const [availValue, setAvailValue] = useState([])
   const [startDate, setStartDate] = useState(new Date());
 
@@ -83,10 +51,6 @@ const Ms_MentorAvailibility = (props) => {
   }, []);
 
   const dispatch = useDispatch();
-  const { userData } = useSelector((state) => ({
-    userData: state.UserData.userData,
-  }));
-  console.log(userData, "user data value")
   useEffect(() => {
     dispatch(mentorDetail());
     dispatch(subjectExpert())
@@ -105,35 +69,35 @@ const Ms_MentorAvailibility = (props) => {
     return [mySQLDate, 'T', mySQLTime].join("");
   }
   const dateTime = convert(startDate)
-  console.log(is_delete,"is active value23")
+
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      mentor_id: '' || '',
       startDate: { dateTime } || '',
       available_date_time: dateTime,
-      is_active: true || ''
+      is_active: true || '',
+      category: selectedOption || '',
     },
     validationSchema: Yup.object({
-      mentor_id: Yup.string().required("Please Enter a Mentor Name"),
+      category: Yup.string().required("Please Select Category"),
       available_date_time: Yup.string().required("Please Select Date and Time"),
     }),
     onSubmit: (values) => {
-      console.log(values.is_active, "is active value")
-      if (values.is_active === true) {
-        console.log(values, "mentor Avail value submitting")
-        setAvailValue(availValue.concat(values))
-        dispatch(mentorAvailUser(values, props.history));
-      }
-      else {
-        console.log(values, "deleted Value sfsfsf")
-      }
+      // console.log(values.is_active, "is active value")
+      // if (values.is_active === true) {
+      console.log(values, "mentor Avail value submitting")
+      // setAvailValue(availValue.concat(values))
+      dispatch(msMentorAvailUser(values, props.history));
+      // }
+      // else {
+      //   console.log(values, "deleted Value sfsfsf")
+      // }
 
     }
   })
 
 
-  const subjectFilterData = userData.filter((item1) => item1.subject_expert?.title === selectedOption && item1.is_active === true);
+  // const subjectFilterData = userData.filter((item1) => item1.subject_expert?.title === selectedOption && item1.is_active === true);
 
   //
 
@@ -183,7 +147,7 @@ const Ms_MentorAvailibility = (props) => {
                       </Col>
                       <Col lg={3} >
                         <div className="mt-3">
-                          <Label className="form-label mb-0">Select Mentor Category</Label>
+                          <Label className="form-label mb-0">Select Mentor Category<span className="text-danger">*</span></Label>
                           <Input
                             name="category"
                             type="select"
@@ -191,14 +155,16 @@ const Ms_MentorAvailibility = (props) => {
                             id="category-field"
                             onChange={handleOptionSelect}
                             onBlur={validation.handleBlur}
+                            required
                             value={
                               validation.values.category || ""
                             }
+
                           >
-                            <option value="Select Category" >Select Category</option>
+                            <option value="" >Select Category</option>
                             {subjectExpertData?.map((item, key) => (
                               <React.Fragment key={key}>
-                                <option value={item.title} key={key}>{item.title}</option>
+                                <option value={item.id} key={key}>{item.title}</option>
                               </React.Fragment>
                             ))}
                           </Input>
@@ -210,40 +176,10 @@ const Ms_MentorAvailibility = (props) => {
                           ) : null}
                         </div>
                       </Col>
-                      <Col lg={3} >
-                        <div className="mt-3">
-                          <Label className="form-label mb-0">Select Mentor</Label>
-                          <Input
-                            name="mentor_id"
-                            type="select"
-                            className="form-select"
-                            placeholder='Select Mentor'
-                            id="mentor-field"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={
-                              validation.values.mentor_id || ""
-                            }
-                          >
-                            <option value="Select name" >Select Name</option>
-                            {subjectFilterData.map((item, key) => (
-                              <React.Fragment key={key}>
-                                <option value={item.id} key={key}>{item.name}</option>
-                              </React.Fragment>
-                            ))}
-                          </Input>
-                          {validation.touched.mentor_id &&
-                            validation.errors.mentor_id ? (
-                            <FormFeedback type="invalid">
-                              {validation.errors.mentor_id}
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-                      </Col>
+
                       <Col lg={2}>
                         <div className="mt-6">
-                          <Button color="success" type="submit" className={classnames({ active: activeTab === '1' })}
-                            onClick={() => { toggleTab('1'); }}>
+                          <Button color="success" type="submit">
                             <i className="ri-add-fill me-1 align-bottom"></i> Add Availibility</Button>
                         </div>
                       </Col>
@@ -253,88 +189,28 @@ const Ms_MentorAvailibility = (props) => {
               </Card>
             </Col>
           </Row>
-          <TabContent activeTab={activeTab} className="pt-4">
-            <TabPane tabId="1">
-              <Row>
-                <Col xxl={3}>
-                  {availValue.map((printVal, key) => {
-                    return (
-                      <Card key={key}>
-                        <CardBody>
-                          <div className='avail-dis'>
-                            <div className='col-lg-3'>
+          <Row>
+            <Col lg={12}>
+              <Card>
+                <CardHeader>
+                  <div className="d-flex align-items-center flex-wrap gap-2">
+                    <div className="flex-grow-1">
+                      <h4 className="card-title mb-0 flex-grow-1">Active Students List</h4>
 
-                              <h5 className="ps-0" scope="row"><span className='text-muted'>Mentor Name :</span></h5><h5>
-                                {(userData.filter((item1) => item1.id === printVal.mentor_id)).map((ewl) => {
-                                  return (
-                                    ewl.name
-                                  )
-                                })}
-                              </h5>
-                            </div>
-                            <div className='col-lg-2'>
+                    </div>
 
-                              <h5 className="ps-0" scope="row"><span className='text-muted'>Date :</span></h5><h5> {new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(dateTime))}</h5>
-                            </div>
-                            <div className='col-lg-2'>
-
-
-                              <h5 className="ps-0" scope="row"><span className='text-muted'>Time :</span></h5><h5> {new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).format(new Date(dateTime))}</h5>
-                            </div>
-                            <div className='col-lg-2'>
-
-
-                              <h5 className="ps-0" scope="row"><span className='text-muted'>Subject Expert :</span></h5><h5> {printVal.category}</h5>
-                            </div>
-                            <div className='col-lg-3'>
-                              <Button className="btn btn-success avil-btn" onClick={() => tog_center()} > Delete</Button>
-                            </div>
-
-                          </div>
-                        </CardBody>
-                      </Card>
-                    )
-
-                  })}
-                </Col>
-              </Row>
-            </TabPane>
-          </TabContent>
+                  </div>
+                </CardHeader>
+                <CardBody>
+                  <div id="table-gridjs">
+                    <Ms_AvailabilityData />
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
         </Container>
       </div>
-      <Modal
-        isOpen={modal_center}
-        toggle={() => {
-          tog_center();
-        }}
-        centered
-      >
-        <ModalHeader className="modal-title" />
-
-        <ModalBody className="text-center p-5">
-          <Form onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit(e);
-            console.log("in submit")
-            return false;
-          }}
-            action="#">
-
-            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json"
-              trigger="loop" colors="primary:#121331,secondary:#08a88a" style={{ width: "120px", height: "120px" }}>
-            </lord-icon>
-            <div className="mt-4">
-              <h4 className="mb-3">Are you sure?</h4>
-              <p className="text-muted mb-4"> You won't be able to revert this!</p>
-              <div className="hstack gap-2 justify-content-center">
-                <Button to="#" type='submit' onClick={handleSubmit} className="btn btn-success">Yes, delete it!</Button>
-                <Button className='btn btn-danger' onClick={() => setmodal_center(false)}>Close</Button>
-
-              </div>
-            </div>
-          </Form>
-        </ModalBody>
-      </Modal>
     </React.Fragment>
   );
 };

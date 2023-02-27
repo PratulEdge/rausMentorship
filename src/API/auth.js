@@ -319,7 +319,7 @@ export const AttendantSession = () => {
   return new Promise((resolve, reject) => {
     axios
       .get(
-        `http://13.127.98.218/mentorship/session/?schedule_date_time__lte=${event}`, { headers }
+        `http://13.127.98.218/mentorship/session/?schedule_date_time__lt=${event}`, { headers }
       )
       .then(res => {
         resolve(res.detail)

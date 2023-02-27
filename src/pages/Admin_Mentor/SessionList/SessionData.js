@@ -23,6 +23,9 @@ const data = [
 // Base Example
 const SessionData = (props) => {
 
+
+    const [session_data, setsession_data] = useState([])
+    const [activeFilter, setActiveFilter] = useState('');
     const dispatch = useDispatch();
     const [Session_id_value, setsession_id_value] = useState()
     const { Session } = useSelector((state) => ({
@@ -50,7 +53,11 @@ const SessionData = (props) => {
         dispatch(mentorSessions());
     }, [dispatch]);
 
-    const data = Session.map(((list, index) => [
+    const filteredData = session_data.filter(row =>
+        (activeFilter === 'All' || String(row.status).toLowerCase().includes(activeFilter.toLowerCase()))
+    );
+
+    const data = filteredData.map(((list, index) => [
         list.serial = index + 1,
         list.mentor_name,
         list.student_name,
@@ -79,8 +86,26 @@ const SessionData = (props) => {
         }
     });
 
+
+    useEffect(() => {
+        setsession_data(Session);
+    }, [Session])
+
+
     return (
         <React.Fragment>
+             <Col xs={5} xxl={2} lg={3} className="status-filter">
+                <select className="form-control align-filter" data-choices data-choices-search-false name="choices-single-default2"
+                    id="choices-single-default2"
+                    onChange={(e) => setActiveFilter(e.target.value)}
+                    value={activeFilter}
+                >
+                    <option value="All">All</option>
+                    <option value="1">Schedule</option>
+                    <option value="4">Completed</option>
+                    <option value="5">Canceled</option>
+                </select>
+            </Col>
             <Grid
                 data={data}
                 columns={['ID', "Mentor Name", 'Student Name', "Time", "Date",

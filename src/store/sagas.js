@@ -82,21 +82,37 @@ import mentorDeleteAuthSaga from "./mentor/deleteMentor/saga";
 import GetCityDetailData from "./commonR/city/saga";
 import { GetStateDetailData } from "./commonR/state/saga";
 import addMentorAuthSaga from "./mentor/mentorDef/saga";
+
+//mentor Side
 import { GetMentorDashData } from "./mentorSide/mentorDash/saga";
 import { GetMentorSessData } from "./mentorSide/mentorSession/saga";
 import { Get_Ms_Student_Data } from "./mentorSide/studentList/saga";
 import { GetStudData } from "./mentorSide/studentData/saga";
 import { Ms_GetStudentProfileData } from "./mentorSide/student_Profile/saga";
 import { Get_Ms_DetailSessionData } from "./mentorSide/sessionDetail/saga";
+import msMentorAvailAuthSaga from "./mentorSide/mentoravail/saga";
+import { GetMentorAvailabilityData } from "./mentorSide/mentorAvailability/saga";
+import { Ms_GetPreTestSeriesData } from "./mentorSide/reports/pre_test_series/saga";
 
 //student Side
 
 import { GetStudentDashData } from "./studentSide/studentDash/saga";
 import { GetStudentPastSessData } from "./studentSide/pastSessions/saga";
+import { GetStuSubjectExpertData } from "./studentSide/subject_expert/saga"
+import { GetStuMentorListData } from "./studentSide/mentor_list/saga";
+import { GetStuMentorAvailData } from "./studentSide/mentor_avail/saga";
+import book_SessionsAuthSaga from "./studentSide/bookSession/saga";
 
 export default function* rootSaga() {
   yield all([
     // new import
+    fork(book_SessionsAuthSaga),
+    fork(Ms_GetPreTestSeriesData),
+    fork(GetStuMentorAvailData),
+    fork(GetStuMentorListData),
+    fork(GetStuSubjectExpertData),
+    fork(GetMentorAvailabilityData),
+    fork(msMentorAvailAuthSaga),
     fork(GetStudentPastSessData),
     fork(GetStudentDashData),
     fork(Get_Ms_DetailSessionData),

@@ -248,6 +248,10 @@ import StudentDashboard from "../pages/studentSide/Dashboard";
 import S_Past_Session from "../pages/studentSide/S_past_sessions/S_Past_session";
 import S_Active_Sessions from "../pages/studentSide/activeSession/S_Active_sessions";
 import { Session_Booking } from "../pages/studentSide/bookSession/Session_Booking";
+import { Ss_SessionData } from "../pages/studentSide/Dashboard/S_T_UpComingSessions/Ss_SessionData";
+import Ss_SessionDetail from "../pages/studentSide/Dashboard/S_T_UpComingSessions/sessionDetail/Ss_sessionDetail";
+import Ms_StudentLists from "../pages/Mentor_Side/student_report/student_list/StudentList";
+import Ms_StudentProfile_Series from "../pages/Mentor_Side/student_report/report/student_report_series";
 
 const user_type = localStorage.getItem("user_type")
 console.log(user_type, "User type")
@@ -468,6 +472,8 @@ const authProtectedRoutes = user_type === '2' ? [
   {path: '/M_student-profile/:id', component:Ms_StudentProfile},
   {path: '/m_session_detail/:id', component:Ms_SessionDetail},
   {path: '/ms_mentor_availability',component:Ms_MentorAvailibility},
+  {path: '/student_lists', component: Ms_StudentLists},
+  {path: '/student-test-series/:id', component: Ms_StudentProfile_Series},
   {
     path: "/",
     exact: true,
@@ -484,6 +490,7 @@ const authProtectedRoutes = user_type === '2' ? [
   {path:'/s-past-sessions', component:S_Past_Session},
   {path: '/student-active-sessions', component:S_Active_Sessions},
   {path: '/book-session', component:Session_Booking},
+  {path: '/ss_session_details/:id', component: Ss_SessionDetail},
  
   
   {

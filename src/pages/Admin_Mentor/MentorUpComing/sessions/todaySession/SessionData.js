@@ -13,8 +13,6 @@ const SessionData = () => {
     function tog_center() {
         setmodal_center(!modal_center);
     }
-
-
     const dispatch = useDispatch();
     const { T_Session } = useSelector((state) => ({
         T_Session: state.TSessionData.T_Session,
@@ -40,15 +38,15 @@ const SessionData = () => {
 
     ));
 
-    const event = new Date(new Date().toString().split('GMT')[0]+' UTC').toISOString().split('.')[0];
-    // const event = new Date();
-    // const jsonDate = event.toJSON().toLocaleString();
-    console.log(event, "current date time");
-    console.log(T_Session.map((item)=>{
-        return(
-            item.schedule_date_time
-        )
-    }), "schedule date time")
+    // const event = new Date(new Date().toString().split('GMT')[0]+' UTC').toISOString().split('.')[0];
+    // // const event = new Date();
+    // // const jsonDate = event.toJSON().toLocaleString();
+    // console.log(event, "current date time");
+    // console.log(T_Session.map((item)=>{
+    //     return(
+    //         item.schedule_date_time
+    //     )
+    // }), "schedule date time")
 
 // const condition = 
 

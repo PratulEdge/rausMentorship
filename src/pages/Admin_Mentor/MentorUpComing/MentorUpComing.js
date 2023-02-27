@@ -33,14 +33,57 @@ export default function MentorUpComing() {
     const jsonDate = localISOTime;
     // console.log(formattedDate, "today date in formatted")
     console.log(jsonDate, "date time")
-    const todayVal = Session.filter(val => val.schedule_date_time == jsonDate).length
-    const upCompingVal = Session.filter(val => val.schedule_date_time > jsonDate).length
-    const attendantVal = Session.filter(val => val.schedule_date_time < jsonDate).length    
-    console.log(todayVal, "schedule Date time",upCompingVal ,"compare date time",attendantVal, "filterVAl Session List in mentorUpcoming")
+    // const todayVal = Session.filter(val => val.schedule_date_time == jsonDate).length
+    // const upCompingVal = Session.filter(val => val.schedule_date_time > jsonDate).length
+    // const attendantVal = Session.filter(val => val.schedule_date_time < jsonDate).length  
 
     useEffect(() => {
         dispatch(mentorSessions());
     }, [dispatch]);
+
+    const [todayVal, setTodayVal] = useState(0);
+  const [upcomingVal, setUpcomingVal] = useState(0);
+  const [attendedVal, setAttendedVal] = useState(0);
+
+    useEffect(() => {
+        const currentDate = new Date();
+
+    //     const todayVal = Session.filter(val => new Date(val.schedule_date_time) === currentDate)
+    // const upCompingVal = Session.filter(val => new Date(val.schedule_date_time) > currentDate)
+    // const attendantVal = Session.filter(val => new Date(val.schedule_date_time) < currentDate)   
+        const todaySessions = Session.filter((val) => {
+          const sessionDate = new Date(val.schedule_date_time);
+          return (
+            sessionDate.getFullYear() === currentDate.getFullYear() &&
+            sessionDate.getMonth() === currentDate.getMonth() &&
+            sessionDate.getDate() === currentDate.getDate()
+          );
+        });
+        const upcomingSessions = Session.filter((val) => {
+            const sessionDate = new Date(val.schedule_date_time);
+            return (
+              sessionDate > currentDate &&
+              (
+                sessionDate.getFullYear() > currentDate.getFullYear() ||
+                sessionDate.getMonth() > currentDate.getMonth() ||
+                sessionDate.getDate() > currentDate.getDate()
+              )
+            //   sessionDate.getMonth() !== currentDate.getMonth() &&
+            //   sessionDate.getDate() > currentDate.getDate()
+            );
+          });
+        // const upcomingSessions = Session.filter((val) => {
+        //   const sessionDate = new Date(val.schedule_date_time);
+        //   return sessionDate > currentDate && sessionDate !== currentDate;
+        // });
+        const attendedSessions = Session.filter((val) => {
+          const sessionDate = new Date(val.schedule_date_time);
+          return sessionDate < currentDate;
+        });
+        setTodayVal(todaySessions.length);
+        setUpcomingVal(upcomingSessions.length);
+        setAttendedVal(attendedSessions.length);
+      }, [Session]);
 
     const [activeTab, setActiveTab] = useState('1');
     const [activityTab, setActivityTab] = useState('1');
@@ -50,6 +93,9 @@ export default function MentorUpComing() {
             setActiveTab(tab);
         }
     };
+
+      
+    console.log(todayVal, "schedule Date time",upcomingVal ,"compare date time",attendedVal, "filterVAl Session List in mentorUpcoming")
     return (
         <React.Fragment>
             <Col xl={4} md={6}>
@@ -111,7 +157,7 @@ export default function MentorUpComing() {
                                     <CountUp
                                         start={0}
                                         separator=","
-                                        end={upCompingVal}
+                                        end={upcomingVal}
                                         duration={3}
                                     />
                                 </span></h4>
@@ -145,7 +191,7 @@ export default function MentorUpComing() {
                                     <CountUp
                                         start={0}
                                         separator=","
-                                        end={attendantVal}
+                                        end={attendedVal}
                                         duration={3}
                                     />
                                 </span></h4>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "reactstrap";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 import Widget from "./Widgets";
@@ -12,10 +12,17 @@ import StoreVisits from "./StoreVisits";
 import TopSellers from "./TopSellers";
 import { ToastContainer } from 'react-toastify';
 
-
 const DashboardEcommerce = () => {
   document.title ="Dashboard | Velzon - React Admin & Dashboard Template";
   console.log("gsjfsf")
+
+  const [userType, setUserType] = useState(null);
+
+  useEffect(() => {
+    const storedUserType = localStorage.getItem('user_type');
+    setUserType(storedUserType);
+  }, []);
+
   return (
     <React.Fragment>
       <ToastContainer closeButton={false} />
@@ -49,6 +56,9 @@ const DashboardEcommerce = () => {
           </Row>
         </Container>
       </div>
+      {userType && (
+        <p>User Type: {userType}</p>
+      )}
     </React.Fragment>
   );
 };

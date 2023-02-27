@@ -46,11 +46,14 @@ function* otpverify({ payload: { user, history } }) {
       });
       console.log(response, "local")
       if (response.type === "success" && response.user_type === 1) {
-        history.push("/student-dashboard");         
+        history.push("/student-dashboard");
+        document.location.reload()             
       } else if (response.type === "success" && response.user_type === 2) {
-        history.push("/dashboard");        
+        history.push("/dashboard"); 
+        document.location.reload() 
       } else if(response.type === "success" && response.user_type === 3){
-        history.push("/mentor-dashboard");        
+        history.push("/mentor-dashboard"); 
+        document.location.reload()         
       }else{
         yield put(apiError(response));
       }

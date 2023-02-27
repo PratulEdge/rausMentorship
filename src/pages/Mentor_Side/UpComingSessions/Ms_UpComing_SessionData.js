@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 
 import Flatpickr from "react-flatpickr";
 import { Grid, _ } from 'gridjs-react';
-import { DropdownItem, Col, DropdownMenu, DropdownToggle, Input, Label, UncontrolledDropdown, Modal, ModalBody, ModalHeader, Button } from 'reactstrap';
+import { DropdownItem, Col, DropdownMenu,UncontrolledPopover,PopoverHeader, PopoverBody, DropdownToggle, Input, Label, UncontrolledDropdown, Modal, ModalBody, ModalHeader, Button } from 'reactstrap';
 // import { Button, Card, CardBody, CardHeader, Col, Container, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 // import Flatpickr from "react-flatpickr";
 import { Link } from 'react-router-dom';
@@ -58,6 +58,7 @@ const Ms_UpComing_SessionData = () => {
             new Date(detail.schedule_date_time).toLocaleTimeString('en-US'),
             detail.status,
             detail.schedule_date_time,
+            detail.join_url,
             detail.session_id
 
         ]
@@ -148,14 +149,31 @@ const Ms_UpComing_SessionData = () => {
                     },
                     {
                         name: 'Join Session',
-                        formatter: (cell) => {
+                        formatter: (cell, row) => {
                             const scheduledDateTime = new Date(cell);
+                            // const { status } = row[6] ;
+                            console.log(row._cells[6]?.data, "row Vaues")
                             const now = new Date();
                             if ((scheduledDateTime.getTime() - now.getTime()) / (1000 * 60) <= 5) {
-                                return _(<Button className='btn-success sess_wid' onClick={console.log("clicked")} >Join</Button>)
-                                //   return <JoinSessionButton scheduledTime={cell} onClick={() => console.log("Join session")} />;
+                                return _(
+                                    <div>
+                                        <Button id="PopoverTop" className='btn-success sess_wid' onClick={() => console.log("Join session available")}>
+                                            Join
+                                        </Button>
+                                        <UncontrolledPopover placement="top" target="PopoverTop">
+                                            <PopoverHeader>Join Meeting</PopoverHeader>
+                                            <PopoverBody><a href={row._cells[6]?.data}>Join</a></PopoverBody>
+                                        </UncontrolledPopover>
+                                    </div>
+                                )
                             } else {
-                                return _(<Button className='btn-success sess_wid' onClick={console.log("clicked")} disabled={true}>Join</Button>);
+                                return _(
+                                    <div>
+                                        <Button id="PopoverTop" className='btn-success sess_wid' disabled={true}>
+                                            Join
+                                        </Button>
+                                    </div>
+                                );
                             }
                         }
                     },

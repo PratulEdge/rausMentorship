@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 
 import Flatpickr from "react-flatpickr";
 import { Grid, _ } from 'gridjs-react';
-import { DropdownItem, Col, DropdownMenu, DropdownToggle, Input, Label, UncontrolledDropdown, Modal, ModalBody, ModalHeader, Button } from 'reactstrap';
+import { DropdownItem, Col, DropdownMenu,UncontrolledPopover,PopoverHeader, PopoverBody, DropdownToggle, Input, Label, UncontrolledDropdown, Modal, ModalBody, ModalHeader, Button } from 'reactstrap';
 // import { Button, Card, CardBody, CardHeader, Col, Container, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 // import Flatpickr from "react-flatpickr";
 import { Link } from 'react-router-dom';
@@ -14,7 +14,7 @@ import { studentPastSessDetail } from '../../../store/actions';
 
 const S_Active_SessionData = () => {
 
-
+    const [isJoinButtonActive, setIsJoinButtonActive] = useState(false);
     const [activeFilter, setActiveFilter] = useState('');
     const [maxDate_val, setMaxDate_val] = useState('')
     const [minDate_val, setMinDate_val] = useState(' ')
@@ -41,10 +41,10 @@ const S_Active_SessionData = () => {
     }, [dispatch]);
 
 
-    useEffect(()=>{
+    useEffect(() => {
         setFilterData_val(studentPastSessData);
-    },[studentPastSessData])
-    const currentdate = new Date();
+    }, [studentPastSessData])
+    // const currentdate = new Date();
     const filteredata = filterData_val.filter(past => new Date(past.schedule_date_time) >= new Date() &&
         (activeFilter === 'All' || String(past.status).toLowerCase().includes(activeFilter.toLowerCase()))
     )
@@ -53,12 +53,15 @@ const S_Active_SessionData = () => {
     const data = filteredata.map(((detail, index) =>
         [
             detail.serial = index + 1,
-            detail.student_name,
-            new Date(detail.schedule_date_time).toLocaleDateString('en-US'),
+            detail.mentor_name,
+            new Date(detail.schedule_date_time).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }),
             new Date(detail.schedule_date_time).toLocaleTimeString('en-US'),
             detail.status,
             detail.schedule_date_time,
-            detail.session_id
+            detail.join_url,
+            detail.session_id,
+            
+            // creation_date = detail.creation_date,
 
         ]
 
@@ -148,17 +151,61 @@ const S_Active_SessionData = () => {
                     },
                     {
                         name: 'Join Session',
-                        formatter: (cell) => {
+                        formatter: (cell, row) => {
                             const scheduledDateTime = new Date(cell);
+                            // const { status } = row[6] ;
+                            console.log(row._cells[6]?.data, "row Vaues")
                             const now = new Date();
                             if ((scheduledDateTime.getTime() - now.getTime()) / (1000 * 60) <= 5) {
-                                return _(<Button className='btn-success sess_wid' onClick={console.log("clicked")} >Join</Button>)
-                                //   return <JoinSessionButton scheduledTime={cell} onClick={() => console.log("Join session")} />;
+                                return _(
+                                    <div>
+                                        <Button id="PopoverTop" className={`btn-success sess_wid ${isJoinButtonActive ? 'active' : ''}`} onClick={() => console.log("Join session available")}>
+                                            Join
+                                        </Button>
+                                        <UncontrolledPopover placement="top" target="PopoverTop">
+                                            <PopoverHeader>Join Meeting</PopoverHeader>
+                                            <PopoverBody><a href={row._cells[6]?.data}>Join</a></PopoverBody>
+                                        </UncontrolledPopover>
+                                    </div>
+                                )
                             } else {
-                                return _(<Button className='btn-success sess_wid' onClick={console.log("clicked")} disabled={true}>Join</Button>);
+                                return _(
+                                    <div>
+                                        <Button id="PopoverTop" className='btn-success sess_wid' disabled={true}>
+                                            Join
+                                        </Button>
+                                    </div>
+                                );
                             }
                         }
-                    },
+                    },                  
+                    
+                    
+                    // {
+                    //     name: 'Join Session',
+                    //     formatter: (cell) => {
+                    //             const scheduledDateTime = new Date(cell);
+                    //             const now = new Date();
+                    //             if ((scheduledDateTime.getTime() - now.getTime()) / (1000 * 60) <= 5) {
+                    //                 return _(<Button className='btn-success sess_wid' onClick={() => console.log("Join session available")} >Join</Button>)
+                    //                 //   return <JoinSessionButton scheduledTime={cell} onClick={() => console.log("Join session")} />;
+                    //             } else {
+                    //                 return _(<Button className='btn-success sess_wid' onClick={() => console.log("Join session not available")} >Join</Button>);
+                    //             }
+                    //         }
+                    //     // _(
+                    //     //     <div>
+                    //     //         <Button color="light" id="PopoverTop">
+                    //     //             Popover on top{cell}
+                    //     //         </Button>
+                    //     //         <UncontrolledPopover placement="top" target="PopoverTop" >
+                    //     //             <PopoverHeader> Top Popover </PopoverHeader>
+                    //     //             <PopoverBody> Vivamus sagittis lacus vel augue laoreet rutrum faucibus. </PopoverBody>
+                    //     //         </UncontrolledPopover>
+                    //     //     </div>
+                    //     // )
+                        
+                    // },
                     {
                         name: 'Actions',
                         formatter: (cell) => _(<UncontrolledDropdown className="dropdown d-inline-block">
@@ -166,7 +213,7 @@ const S_Active_SessionData = () => {
                                 <i className="ri-more-fill align-middle"></i>
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-end dropdown-flow" style={{ position: "absolute", inset: "auto 0px auto auto", margin: "0px", transform: "translate(0px, 23px)" }}>
-                                <DropdownItem href={`/m_session_detail/${cell}`}><i className="ri-eye-fill align-bottom me-2 text-muted"></i>View</DropdownItem>
+                                <DropdownItem href={`/ss_session_details/${cell}`}><i className="ri-eye-fill align-bottom me-2 text-muted"></i>View</DropdownItem>
                                 {/* <DropdownItem href="/edit-mentor-profile" className='edit-item-btn'><i className="ri-pencil-fill align-bottom me-2 text-muted"></i>Delete</DropdownItem> */}
                                 {/* <DropdownItem onClick={() => tog_center()} className='remove-item-btn'> <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete </DropdownItem> */}
                             </DropdownMenu>
@@ -177,30 +224,6 @@ const S_Active_SessionData = () => {
                 sort={true}
                 pagination={{ enabled: true, limit: 10, }}
             />
-            <Modal
-                isOpen={modal_center}
-                toggle={() => {
-                    tog_center();
-                }}
-                centered
-            >
-                <ModalHeader className="modal-title" />
-
-                <ModalBody className="text-center p-5">
-                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json"
-                        trigger="loop" colors="primary:#121331,secondary:#08a88a" style={{ width: "120px", height: "120px" }}>
-                    </lord-icon>
-                    <div className="mt-4">
-                        <h4 className="mb-3">Are you sure?</h4>
-                        <p className="text-muted mb-4"> You won't be able to revert this!</p>
-                        <div className="hstack gap-2 justify-content-center">
-                            <Link to="#" className="btn btn-success">Yes, delete it!</Link>
-                            <Button className='btn btn-danger' onClick={() => setmodal_center(false)}>Close</Button>
-
-                        </div>
-                    </div>
-                </ModalBody>
-            </Modal>
         </React.Fragment>
     );
 };
