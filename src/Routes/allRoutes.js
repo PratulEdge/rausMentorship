@@ -240,6 +240,9 @@ import Past_Session from "../pages/Mentor_Side/Dashboard/pastSession/Past_sessio
 import Ms_StudentProfile from "../pages/Mentor_Side/studentList/studentProfile/studentProfile";
 import Ms_SessionDetail from "../pages/Mentor_Side/Session/Ms_Session_detail/session_full_detail";
 import Ms_MentorAvailibility from "../pages/Mentor_Side/MentorAvailability/Ms_mentorAvailability";
+import Mnt_Session_Report from "../pages/Mentor_Side/mentor_report/mentor_session_report";
+import Active_student_List from "../pages/Mentor_Side/student_all_session_report/student_active/active_Student_List";
+import All_Student_Past_Session_Detail from "../pages/Mentor_Side/student_all_session_report/all_session_detail";
 
 
 ///Student Side
@@ -252,6 +255,7 @@ import { Ss_SessionData } from "../pages/studentSide/Dashboard/S_T_UpComingSessi
 import Ss_SessionDetail from "../pages/studentSide/Dashboard/S_T_UpComingSessions/sessionDetail/Ss_sessionDetail";
 import Ms_StudentLists from "../pages/Mentor_Side/student_report/student_list/StudentList";
 import Ms_StudentProfile_Series from "../pages/Mentor_Side/student_report/report/student_report_series";
+import Ms_Student_Report from "../pages/Mentor_Side/student_report/report/student_report";
 
 const user_type = localStorage.getItem("user_type")
 console.log(user_type, "User type")
@@ -474,6 +478,10 @@ const authProtectedRoutes = user_type === '2' ? [
   {path: '/ms_mentor_availability',component:Ms_MentorAvailibility},
   {path: '/student_lists', component: Ms_StudentLists},
   {path: '/student-test-series/:id', component: Ms_StudentProfile_Series},
+  {path: '/student-test-series-report/:id', component:Ms_Student_Report},
+  {path: '/mentor-sessions-report', component:Mnt_Session_Report},
+  {path: '/active-student-report', component:Active_student_List},
+  {path: '/student-past-sessions-detail/:id', component:All_Student_Past_Session_Detail},
   {
     path: "/",
     exact: true,

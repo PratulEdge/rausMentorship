@@ -33,6 +33,24 @@ export const login = loginObject => {
   })
 }
 
+export const resendOtp = resendObject => {
+  return new Promise((resolve, reject) => {
+    const headers = {
+      "Content-Type": "multipart/form-data",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow- ": "Content-Type",
+    }
+    console.log("in login api email")
+    axios
+      .post('http://13.127.98.218/mentorship/resend-email-auth/', resendObject, { headers })
+      .then(response => {
+        console.log(response, "inside api")
+        resolve(response)
+      })
+      .catch(error => reject(error))
+  })
+}
+
 export const otp_verify = otpObject => {
   return new Promise((resolve, reject) => {
     const headers = {
@@ -63,6 +81,24 @@ export const phoneLogin = phoneLoginObject => {
     console.log("in phone login api")
     axios
       .post('http://13.127.98.218/mentorship/mobile-auth/', phoneLoginObject, { headers })
+      .then(response => {
+        console.log(response, "inside api")
+        resolve(response)
+      })
+      .catch(error => reject(error))
+  })
+}
+
+export const phoneResendOtp = phoneResendOtpObject => {
+  return new Promise((resolve, reject) => {
+    const headers = {
+      "Content-Type": "multipart/form-data",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow- ": "Content-Type",
+    }
+    console.log("in phone login api")
+    axios
+      .post('http://13.127.98.218/mentorship/resend-mobile-auth/', phoneResendOtpObject, { headers })
       .then(response => {
         console.log(response, "inside api")
         resolve(response)

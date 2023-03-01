@@ -3,8 +3,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Login Redux States
-import {OTP_VERIFY,OTP_VERIFY_SUCCESS, LOGIN_USER, LOGOUT_USER, SOCIAL_LOGIN } from "./actionTypes";
-import { apiOtpError, loginSuccess, logoutUserSuccess,  otpverifysuccess, } from "./actions";
+import { OTP_VERIFY, OTP_VERIFY_SUCCESS, LOGIN_USER, LOGOUT_USER, SOCIAL_LOGIN } from "./actionTypes";
+import { apiOtpError, loginSuccess, logoutUserSuccess, otpverifysuccess, } from "./actions";
 
 //Include Both Helper File with needed methods
 import { getFirebaseBackend } from "../../../helpers/firebase_helper";
@@ -37,30 +37,43 @@ function* otpverify({ payload: { user, history } }) {
       sessionStorage.setItem("authUser", JSON.stringify(response));
       yield put(loginSuccess(response));
     } else if (process.env.REACT_APP_DEFAULTAUTH === "backend") {
-      // history.push("/dashboard");
-      console.log("saga otp inSide function")
-      const response = yield call(otp_verify, {  //login
-        email: user.email,
-        token: user.token,
-        // mobile: user.mobile,
-      });
-      console.log(response, "local")
-      if (response.type === "success" && response.user_type === 1) {
-        history.push("/student-dashboard");
-        document.location.reload()             
-      } else if (response.type === "success" && response.user_type === 2) {
-        history.push("/dashboard"); 
-        document.location.reload() 
-      } else if(response.type === "success" && response.user_type === 3){
-        history.push("/mentor-dashboard"); 
-        document.location.reload()         
-      }else{
-        yield put(apiError(response));
+      console.log(user, "saga otp inSide function")
+      if (user.mobile) {
+        const response = yield call(otp_verify, {
+          mobile: user.mobile,
+          token: user.token,
+        });
+        if (response.type === "success" && response.user_type === 1) {
+          history.push("/student-dashboard");
+          document.location.reload()
+        } else if (response.type === "success" && response.user_type === 2) {
+          history.push("/dashboard");
+          document.location.reload()
+        } else if (response.type === "success" && response.user_type === 3) {
+          history.push("/mentor-dashboard");
+          document.location.reload()
+        } else {
+          yield put(apiError(response));
+        }
+
+      } else {
+        const response = yield call(otp_verify, {
+          email: user.email,
+          token: user.token,
+        });
+        if (response.type === "success" && response.user_type === 1) {
+          history.push("/student-dashboard");
+          document.location.reload()
+        } else if (response.type === "success" && response.user_type === 2) {
+          history.push("/dashboard");
+          document.location.reload()
+        } else if (response.type === "success" && response.user_type === 3) {
+          history.push("/mentor-dashboard");
+          document.location.reload()
+        } else {
+          yield put(apiError(response));
+        }
       }
-      // localStorage.setItem("email", response.data.email)
-      
-      // sessionStorage.setItem("authUser", JSON.stringify(response));
-      // history.push("/dashboard");
     }
   } catch (error) {
     yield put(apiOtpError(error));

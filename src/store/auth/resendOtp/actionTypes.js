@@ -1,0 +1,10 @@
+export const RESEND_OTP = "RESEND_OTP"
+export const RESEND_OTP_SUCCESS = "RESEND_OTP_SUCCESS"
+
+// export const LOGOUT_USER = "LOGOUT_USER"
+// export const LOGOUT_USER_SUCCESS = "LOGOUT_USER_SUCCESS"
+export const RESEND_OTP_API_ERROR = "RESEND_OTP_API_ERROR"
+
+// export const SOCIAL_LOGIN = "SOCIAL_LOGIN"
+
+// export const RESET_LOGIN_FLAG = "RESET_LOGIN_FLAG"

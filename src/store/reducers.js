@@ -91,6 +91,7 @@ import mentorDelete from "./mentor/deleteMentor/reducer";
 import City from "./commonR/city/reducer";
 import State from "./commonR/state/reducer";
 import addMentor from "./mentor/mentorDef/reducer";
+import ResendOtpData from "./auth/resendOtp/reducer";
 
 //mentor side
 import MentorDashData from "./mentorSide/mentorDash/reducer";
@@ -102,6 +103,10 @@ import Ms_DetailSessionData from "./mentorSide/sessionDetail/reducer";
 import msMentorAvail from "./mentorSide/mentoravail/reducer";
 import MntAvailabilityData from "./mentorSide/mentorAvailability/reducer";
 import PreTestSeriesData from "./mentorSide/reports/pre_test_series/reducer";
+import PreTestListData from "./mentorSide/reports/pre_test_list/reducer";
+import Pre_stud_report_Data from "./mentorSide/reports/pre_stud_report/reducer";
+import Mnt_Sess_report_Data from "./mentorSide/reports/mentor_session_report/reducer";
+import Student_Past_Session_Data from "./mentorSide/reports/student_past_session/reducer";
 
 
 //student side
@@ -115,6 +120,11 @@ import BookSession from "./studentSide/bookSession/reducer";
 
 const rootReducer = combineReducers({
     // new import
+    ResendOtpData,
+    Student_Past_Session_Data,
+    Mnt_Sess_report_Data,
+    Pre_stud_report_Data,
+    PreTestListData,
     BookSession,
     PreTestSeriesData,
     StuMentorAvailData,

@@ -1,4 +1,8 @@
 import axios from "axios";
+
+const currentDateTime = new Date().toLocaleTimeString('en-US')
+const event = new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0];
+
 const headers = {
     "Content-Type": "multipart/form-data",
     "Access-Control-Allow-Origin": "*",
@@ -119,6 +123,71 @@ const headers = {
         )
         .then(res => {
           resolve(res.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
+  export const Prelims_Test_List = () => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(
+          `http://prep.edgecanvas.com/api/v1/mentorship-test/?series_type=prelims&email=ecv1@yopmail.com&test_series_id=63d7e0e20ea2374c4983e51a`, { 
+            "Content-Type": "multipart/form-data",
+            // "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow- ": "Content-Type",
+            "Authorization": `token ${localStorage.getItem("token")}`
+          } 
+        )
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
+
+  export const Prelims_Test_Report = (id) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(
+          `http://prep.edgecanvas.com/api/v1/mentorship-test-report/?series_type=prelims&email=ecv1@yopmail.com&attempt_id=${id}`, { 
+            "Content-Type": "multipart/form-data",
+            // "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow- ": "Content-Type",
+            "Authorization": `token ${localStorage.getItem("token")}`
+          } 
+        )
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
+
+  export const Mentor_Session_Report = (id) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(
+          `http://13.127.98.218/mentorship/mentor/sessions?schedule_date_time__lte=${event}`, { headers }
+        )
+        .then(res => {
+          resolve(res.detail)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
+
+  export const Student_Past_Session_data = (id) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(
+          `http://13.127.98.218/mentorship/mentor/student_sessions/?student_id=${id}&status=5`, { headers }
+        )
+        .then(res => {
+          resolve(res.detail)
         })
         .catch(error => reject(error))
     })

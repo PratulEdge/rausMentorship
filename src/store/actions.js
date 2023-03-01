@@ -72,7 +72,7 @@ export * from './mentor/deleteMentor/actions'
 export * from './commonR/city/actions'
 export * from './commonR/state/actions'
 export * from './mentor/mentorDef/actions'
-
+export * from  './auth/resendOtp/actions'
 //mentor Side
 
 export * from './mentorSide/mentorDash/actions'
@@ -84,6 +84,10 @@ export * from './mentorSide/sessionDetail/actions'
 export * from './mentorSide/mentoravail/actions'
 export * from "./mentorSide/mentorAvailability/actions"
 export * from './mentorSide/reports/pre_test_series/actions'
+export * from './mentorSide/reports/pre_test_list/actions'
+export * from './mentorSide/reports/pre_stud_report/actions'
+export * from './mentorSide/reports/mentor_session_report/actions'
+export * from './mentorSide/reports/student_past_session/actions'
 
 // Student side
 export * from './studentSide/studentDash/actions'

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Grid, _ } from 'gridjs-react';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown, Form } from 'reactstrap';
 import { useSelector, useDispatch } from "react-redux";
-import { studDataDetail } from '../../../store/actions';
+import { studDataDetail } from '../../../../store/actions';
 
 
-const Ms_StudentListData = (props) => {
+const Active_student_List_Data = (props) => {
     const dispatch = useDispatch();
     const { studentData } = useSelector((state) => ({
         studentData: state.StudentData.studentData,
@@ -16,7 +16,6 @@ const Ms_StudentListData = (props) => {
         list.name,
         list.email,
         list.mobile,
-        list.dob,
         list.prev_civil_attempt,
         list.id
     ]
@@ -32,7 +31,7 @@ const Ms_StudentListData = (props) => {
         <React.Fragment>           
             <Grid
                 data={data}
-                columns={['ID', "Name", 'Email', "Mobile", "DOB",
+                columns={['ID', "Name", 'Email', "Mobile",
                     {
                         name: "Prev Attempted",
                         formatter: (cell) => {
@@ -54,7 +53,7 @@ const Ms_StudentListData = (props) => {
                                 <i className="ri-more-fill align-middle"></i>
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-end">
-                                <DropdownItem href={`/M_student-profile/${cell}`}><i className="ri-eye-fill align-bottom me-2 text-muted"></i>View</DropdownItem>
+                                <DropdownItem href={`/student-past-sessions-detail/${cell}`}><i className="ri-eye-fill align-bottom me-2 text-muted"></i>View</DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown>)
                     },
@@ -68,4 +67,4 @@ const Ms_StudentListData = (props) => {
 };
 
 
-export { Ms_StudentListData };
+export { Active_student_List_Data };

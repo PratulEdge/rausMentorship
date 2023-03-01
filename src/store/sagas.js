@@ -82,6 +82,7 @@ import mentorDeleteAuthSaga from "./mentor/deleteMentor/saga";
 import GetCityDetailData from "./commonR/city/saga";
 import { GetStateDetailData } from "./commonR/state/saga";
 import addMentorAuthSaga from "./mentor/mentorDef/saga";
+import OtpResendUserauthSaga from "./auth/resendOtp/saga";
 
 //mentor Side
 import { GetMentorDashData } from "./mentorSide/mentorDash/saga";
@@ -93,6 +94,10 @@ import { Get_Ms_DetailSessionData } from "./mentorSide/sessionDetail/saga";
 import msMentorAvailAuthSaga from "./mentorSide/mentoravail/saga";
 import { GetMentorAvailabilityData } from "./mentorSide/mentorAvailability/saga";
 import { Ms_GetPreTestSeriesData } from "./mentorSide/reports/pre_test_series/saga";
+import { Ms_GetPreTestListData } from "./mentorSide/reports/pre_test_list/saga";
+import { get_Pre_stud_reportData } from "./mentorSide/reports/pre_stud_report/saga";
+import { get_Mnt_Sess_reportData } from "./mentorSide/reports/mentor_session_report/saga";
+import { get_student_past_session_detail_Data } from "./mentorSide/reports/student_past_session/saga";
 
 //student Side
 
@@ -106,6 +111,11 @@ import book_SessionsAuthSaga from "./studentSide/bookSession/saga";
 export default function* rootSaga() {
   yield all([
     // new import
+    fork(OtpResendUserauthSaga),
+    fork(get_student_past_session_detail_Data),
+    fork(get_Mnt_Sess_reportData),
+    fork(get_Pre_stud_reportData),
+    fork(Ms_GetPreTestListData),
     fork(book_SessionsAuthSaga),
     fork(Ms_GetPreTestSeriesData),
     fork(GetStuMentorAvailData),

@@ -32,7 +32,6 @@ const Past_Session_Data = () => {
     const { mentorSessData } = useSelector((state) => ({
         mentorSessData: state.MentorSessData.mentorSessData,
     }));
-    console.log(mentorSessData, "MentorSessData T_Session userDatasdsd")
     useEffect(() => {
         dispatch(mentorSessDetail());
         

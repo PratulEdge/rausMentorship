@@ -158,7 +158,7 @@ const Navdata = () => {
             subItems: [
                 {
                     id: "ecommerce",
-                    label: "Ecommerce",
+                    label: "Admin Dashboard",
                     link: "/dashboard",
                     parentId: "dashboard",
                 },
@@ -253,7 +253,7 @@ const Navdata = () => {
             subItems: [
                 {
                     id: "ecommerce",
-                    label: "Mentor Ecommerce",
+                    label: "Mentor Dashboard",
                     link: "/mentor-dashboard",
                     parentId: "dashboard",
                 },
@@ -323,8 +323,8 @@ const Navdata = () => {
                     stateVariables: isSession,
                     childItems: [
                         { id: 1, label: "Student Report", link: "/student_lists", parentId: "pages" },
-                        { id: 2, label: "Mentor Report", link: "/session-list", parentId: "pages" },
-                        { id: 3, label: "Session Report", link: "/session-list", parentId: "pages" },
+                        { id: 2, label: "Mentor Report", link: "/mentor-sessions-report", parentId: "pages" },
+                        { id: 3, label: "Session Report", link: "/active-student-report", parentId: "pages" },
                         { id: 4, label: "Over All Report", link: "/upcoming-sessions", parentId: "pages" },
                     ]
                 },

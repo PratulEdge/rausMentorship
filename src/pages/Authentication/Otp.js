@@ -38,7 +38,7 @@ const OtpAuth = (props) => {
 
     useEffect(() => {
         setUserOTP({
-            // mobile: userMobile,
+            mobile: userMobile,
             email: userMail,
             token: OTP,
         })
@@ -49,14 +49,14 @@ const OtpAuth = (props) => {
         enableReinitialize: true,
 
         initialValues: {
-            // mobile: userOTP.mobile|| userMobile,
-            email: userOTP.email || userMail,
+            mobile: userOTP.mobile|| userMobile || '',
+            email: userOTP.email || userMail || '',
             token: userOTP.token || "" || '',
         },
 
         validationSchema: Yup.object({
             // mobile: Yup.number().required("Please Enter Your Mobile Number"),
-            email: Yup.string().required("Please Enter Your Email"),
+            // email: Yup.string().required("Please Enter Your Email"),
             token: Yup.string().required("Please Enter Your OTP"),
         }),
         onSubmit: (values) => {
