@@ -14,10 +14,13 @@ import StudentProfileSession from '../../../Admin_Mentor/student/StudentProfile/
 // import StudentProfileSession from '../../Session/sessions';
 
 
-const Ms_StudentProfile_Series = () => {
+const Ms_StudentProfile_Series = (props) => {
 
     ///
 
+    const [testList, setTestList] = useState([])
+    const [series_id, setSeries_id] = useState('')
+    const [examType, setExamType] = useState('prelims')
     const [col1, setcol1] = useState(false);
     const t_col1 = () => {
         setcol1(!col1);
@@ -53,29 +56,57 @@ const Ms_StudentProfile_Series = () => {
     console.log(preTestSeriesData, email, preTestListData, "Pre Series data")
     useEffect(() => {
         dispatch(Ms_studentProfile(id));
-        dispatch(preTestSeriesProfile(email));
-        dispatch(preTestListProfile());
-    }, [dispatch]);
+        dispatch(preTestSeriesProfile(email, examType));
+    }, [dispatch, examType]);
+
+    useEffect(() => {
+        // console.log("sddskad")
+        dispatch(preTestListProfile(email, examType, series_id));
+        // setTestList(preTestListData)
+    }, [dispatch, series_id])
+
+    function handleTestClick() {
+        console.log("Clicked pre")
+        setSeries_id('')
+        toggleTab('1');
+        setExamType('prelims');
+        setOpenIndexes([]);
+        preTestSeriesProfile(email, examType);
+
+    }
+    function handleMainsTestClick() {
+        console.log("Clicked mains")
+        setSeries_id('')
+        toggleTab('2');
+        setExamType('mains');
+        setOpenIndexes([]);
+        preTestSeriesProfile(email, examType);
+
+    }
 
 
     // AccordionClick Ui
 
     const [openIndexes, setOpenIndexes] = useState([]);
+    console.log(openIndexes, "openIndex")
 
     const handleAccordionClick = (index) => {
-        const currentIndex = openIndexes.indexOf(index);
-        const newIndexes = [...openIndexes];
-        if (currentIndex === -1) {
-            newIndexes.push(index);
-        } else {
-            newIndexes.splice(currentIndex, 1);
-        }
-        setOpenIndexes(newIndexes);
+        setOpenIndexes((openIndexes) => {
+            const currentIndex = openIndexes.indexOf(index);
+            console.log(currentIndex, "currentIndex")
+            const isCurrentlyOpen = currentIndex !== -1;
+            if (isCurrentlyOpen) {
+                // if clicked item is already open, close it
+                return [...openIndexes.slice(0, currentIndex), ...openIndexes.slice(currentIndex + 1)];
+            } else {
+                // if clicked item is closed, close all others and open the clicked item
+                return [index];
+            }
+        });
     };
-
     //
 
-
+    console.log(examType, series_id, "exam type")
 
     document.title = "Profile | Rau's MentorShip - Mentor Profile";
 
@@ -109,10 +140,9 @@ const Ms_StudentProfile_Series = () => {
                             })}
                         </Row>
                     </div>
-
                     <Row>
-                        {ms_studentData.map((stu_val) => {
-                            return (
+                        {/* {ms_studentData.map((stu_val) => {
+                            return ( */}
                                 <Col lg={12}>
                                     <div>
                                         <div className="d-flex">
@@ -122,7 +152,7 @@ const Ms_StudentProfile_Series = () => {
                                                     <NavLink
                                                         href="#overview-tab"
                                                         className={classnames({ active: activeTab === '1' })}
-                                                        onClick={() => { toggleTab('1'); }}
+                                                        onClick={handleTestClick}
                                                     >
                                                         <i className="ri-airplay-fill d-inline-block d-md-none"></i> <span
                                                             className="d-none d-md-inline-block">Prelims</span>
@@ -132,7 +162,7 @@ const Ms_StudentProfile_Series = () => {
                                                     <NavLink
                                                         href="#activities"
                                                         className={classnames({ active: activeTab === '2' })}
-                                                        onClick={() => { toggleTab('2'); }}
+                                                        onClick={handleMainsTestClick}
                                                     >
                                                         <i className="ri-list-unordered d-inline-block d-md-none"></i> <span
                                                             className="d-none d-md-inline-block">Mains</span>
@@ -149,7 +179,7 @@ const Ms_StudentProfile_Series = () => {
                                                                 <Col xxl={3}>
                                                                     <Card>
                                                                         <CardBody>
-                                                                            <h5 className="card-title mb-3">Prelims Test Series List</h5>
+                                                                            <h5 className="card-title mb-3">{examType.charAt(0).toUpperCase() + examType.slice(1)} Test Series List</h5>
                                                                             <Accordion className="lefticon-accordion custom-accordionwithicon accordion-border-box" id="accordionlefticon">
                                                                                 {preTestSeriesData.map((rpt_val, index) => (
                                                                                     <AccordionItem key={index}>
@@ -157,18 +187,18 @@ const Ms_StudentProfile_Series = () => {
                                                                                             <button
                                                                                                 className={classnames("accordion-button", { collapsed: openIndexes.indexOf(index) === -1 })}
                                                                                                 type="button"
-                                                                                                onClick={() => handleAccordionClick(index)}
+                                                                                                onClick={() => { handleAccordionClick(index); setSeries_id(rpt_val.test_series_id) }}
                                                                                                 style={{ cursor: "pointer" }}
                                                                                             >
-                                                                                                {rpt_val.name} , {rpt_val.id}
+                                                                                                {rpt_val.series_title} , {rpt_val.test_series_id}
                                                                                             </button>
                                                                                         </h2>
                                                                                         <Collapse isOpen={openIndexes.indexOf(index) !== -1} className="accordion-collapse">
                                                                                             {
-                                                                                                preTestListData.map((rpt_tst) => (
+                                                                                                preTestListData?.map((rpt_tst) => (
                                                                                                     <div className="accordion-body">
                                                                                                         <li key={rpt_tst.id}>
-                                                                                                        <Link to={`/student-test-series-report/${rpt_tst.attempt_id}`}>{rpt_tst.title}{rpt_tst.attempt_id}</Link>
+                                                                                                            <Link to={{pathname:`/student-test-series-report/${rpt_tst.attempt_id}`, state: { email: email, examType: examType }}}>{rpt_tst.test_title}{rpt_tst.attempt_id}</Link>
                                                                                                         </li>
                                                                                                     </div>
                                                                                                 ))
@@ -184,7 +214,6 @@ const Ms_StudentProfile_Series = () => {
                                                         </div>
                                                     </Col>
                                                 </Row>
-
                                             </TabPane>
                                             <TabPane tabId="2">
                                                 <Row>
@@ -193,15 +222,35 @@ const Ms_StudentProfile_Series = () => {
                                                             <Row>
                                                                 <Col xxl={3}>
                                                                     <Card>
-                                                                        <CardBody>
-                                                                            <h5 className="card-title mb-3">Mains Test Series List</h5>
-                                                                            <ul>
-                                                                                {preTestSeriesData.map((rpt_val) => (
-                                                                                    <li key={rpt_val.id}>
-                                                                                        <a href={`/${rpt_val.id}`}>{rpt_val.name}</a>
-                                                                                    </li>
+                                                                        <CardBody>                                                                            
+                                                                            <h5 className="card-title mb-3">{examType.charAt(0).toUpperCase() + examType.slice(1)} Test Series List</h5>
+                                                                            <Accordion className="lefticon-accordion custom-accordionwithicon accordion-border-box" id="accordionlefticon">
+                                                                                {preTestSeriesData.map((rpt_val, index) => (
+                                                                                    <AccordionItem key={index}>
+                                                                                        <h2 className="accordion-header" id={`heading${index}`}>
+                                                                                            <button
+                                                                                                className={classnames("accordion-button", { collapsed: openIndexes.indexOf(index) === -1 })}
+                                                                                                type="button"
+                                                                                                onClick={() => { handleAccordionClick(index); setSeries_id(rpt_val.test_series_id) }}
+                                                                                                style={{ cursor: "pointer" }}
+                                                                                            >
+                                                                                                {rpt_val.series_title} , {rpt_val.test_series_id}
+                                                                                            </button>
+                                                                                        </h2>
+                                                                                        <Collapse isOpen={openIndexes.indexOf(index) !== -1} className="accordion-collapse">
+                                                                                            {
+                                                                                                preTestListData?.map((rpt_tst) => (
+                                                                                                    <div className="accordion-body">
+                                                                                                        <li key={rpt_tst.id}>
+                                                                                                            <Link to={{pathname:`/student-mains-test-report/${rpt_tst.attempt_id}`, state: { email: email, examType: examType }}}>{rpt_tst.test_title}{rpt_tst.attempt_id}</Link>
+                                                                                                        </li>
+                                                                                                    </div>
+                                                                                                ))
+                                                                                            }
+                                                                                        </Collapse>
+                                                                                    </AccordionItem>
                                                                                 ))}
-                                                                            </ul>
+                                                                            </Accordion>
                                                                         </CardBody>
                                                                     </Card>
                                                                 </Col>
@@ -209,13 +258,12 @@ const Ms_StudentProfile_Series = () => {
                                                         </div>
                                                     </Col>
                                                 </Row>
-
                                             </TabPane>
                                         </TabContent>
                                     </div>
                                 </Col>
-                            )
-                        })}
+                            {/* )
+                        })} */}
 
                     </Row>
                 </Container>

@@ -4,16 +4,16 @@ import { Card, Col, Container, Row, } from 'reactstrap';
 import { useSelector, useDispatch } from "react-redux";
 import { document } from '../../../common/data';
 import { Mnt_Sess_report } from '../../../store/actions';
-import {startOfToday, subMonths,startOfMonth, endOfMonth } from 'date-fns';
+import { startOfToday, subMonths, startOfMonth, endOfMonth, format } from 'date-fns';
+// import MentorPrevDataWithLazyLoading from '../../Admin_Mentor/loader/Lazy_loading';
 import Flatpickr from "react-flatpickr";
+import { lazy, Suspense } from 'react';
 
 const Mnt_Session_Report = () => {
 
-    //
     const [mentor_prev_data, setMentor_prev_data] = useState([])
     const { parseISO, format } = require('date-fns');
     const [selectedDates, setSelectedDates] = useState([]);
-    //
     const dispatch = useDispatch();
     const { mnt_sess_report_Data } = useSelector((state) => ({
         mnt_sess_report_Data: state.Mnt_Sess_report_Data.mnt_sess_report_Data,
@@ -29,29 +29,69 @@ const Mnt_Session_Report = () => {
     }, [mnt_sess_report_Data])
 
     //
+
+    // useEffect(() => {
+    //     handleDateSelection([]);
+    //   }, [dispatch]);
+
+    // function handleDateSelection(selectedDates) {
+    //     console.log(selectedDates.length,"in handleDateSelection")
+    //     setSelectedDates(selectedDates);
+      
+    //     if (selectedDates.length === 0) {
+    //       // Get the start and end dates for the previous month
+    //       const today = new Date();
+    //       const prevMonthStart = format(startOfMonth(subMonths(today, 1)), "yyyy-MM-dd");
+    //       const prevMonthEnd = format(endOfMonth(subMonths(today, 1)), "yyyy-MM-dd");
+    //       console.log(prevMonthStart, prevMonthEnd, "PrevDate")
+
+    //       setSelectedDates([prevMonthStart, prevMonthEnd]);
+          
+    //       // Filter the data for the previous month
+    //       const filteredItems = mnt_sess_report_Data.filter((item) => {
+    //         const itemDate = format(parseISO(item.schedule_date_time), "yyyy-MM-dd");
+    //         return itemDate >= prevMonthStart && itemDate <= prevMonthEnd;
+    //       });
+
+    //       console.log(filteredItems, "filtered data")
+          
+    //       setMentor_prev_data(filteredItems);
+    //     } else {
+    //       // Filter the data based on the selected dates
+    //       const startDate = format(selectedDates[0], "yyyy-MM-dd");
+    //       const endDate = format(selectedDates[1], "yyyy-MM-dd");
+      
+    //       const filteredItems = mnt_sess_report_Data.filter((item) => {
+    //         const itemDate = format(parseISO(item.schedule_date_time), "yyyy-MM-dd");
+    //         return itemDate >= startDate && itemDate <= endDate;
+    //       });
+      
+    //       setMentor_prev_data(filteredItems);
+    //     }
+    //   }
     function handleDateSelection(selectedDates) {
         console.log("i am running")
-        setSelectedDates(selectedDates);      
+        setSelectedDates(selectedDates);
         if (selectedDates.length === 0) {
-        //   const today = new Date();
-        //   const startDate = format(startOfMonth(today), 'yyyy-MM-dd');
-        //   const endDate = format(endOfMonth(today), 'yyyy-MM-dd');
-        //   selectedDates = [startDate, endDate];
+            //   const today = new Date();
+            //   const startDate = format(startOfMonth(today), 'yyyy-MM-dd');
+            //   const endDate = format(endOfMonth(today), 'yyyy-MM-dd');
+            //   selectedDates = [startDate, endDate];
         }
-      
+
         const startDate = format(selectedDates[0], "yyyy-MM-dd");
         const endDate = format(selectedDates[1], "yyyy-MM-dd");
-      
+
         const filteredItems = mnt_sess_report_Data.filter((item) => {
-          const itemDate = format(parseISO(item.schedule_date_time), "yyyy-MM-dd");
-          console.log(itemDate, "date value");
-          return itemDate >= startDate && itemDate <= endDate;
+            const itemDate = format(parseISO(item.schedule_date_time), "yyyy-MM-dd");
+            console.log(itemDate, "date value");
+            return itemDate >= startDate && itemDate <= endDate;
         });
-      
+
         setMentor_prev_data(filteredItems);
         console.log(filteredItems, "filtered value");
-      }
-    //
+    }
+    
 
     document.title = "Profile | Rau's MentorShip - Mentor Profile";
 
@@ -110,53 +150,55 @@ const Mnt_Session_Report = () => {
                             </Row>
 
                             <Row className="row-cols-xxl-5 row-cols-lg-3 row-cols-3">
-
-                                {mentor_prev_data.map((prev_val) => {
-                                    return (
-                                        <Col lg={4}>
-                                            <Card className="card-body">
-                                                <div className="mb-4 align-items-center">
-                                                    <div className="flex-shrink-0">
-                                                        {/* <img src={avatar1} alt="" className="avatar-sm rounded-circle" /> */}
+                                {/* <MentorPrevDataWithLazyLoading mentor_prev_data={mentor_prev_data} /> */}
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    {mentor_prev_data.map((prev_val) => {
+                                        return (
+                                            <Col lg={4}>
+                                                <Card className="card-body">
+                                                    <div className="mb-4 align-items-center">
+                                                        <div className="flex-shrink-0">
+                                                            {/* <img src={avatar1} alt="" className="avatar-sm rounded-circle" /> */}
+                                                        </div>
+                                                        <Row>
+                                                            <Col lg={6}>
+                                                                <h6 className="card-title mb-1">Student Name:- </h6>
+                                                            </Col>
+                                                            <Col lg={6}>
+                                                                <p className="text-muted mb-0">{prev_val.student_name}</p>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col lg={6}>
+                                                                <h6 className="card-title mb-1">Schedule Date:- </h6>
+                                                            </Col>
+                                                            <Col lg={6}>
+                                                                <p className="text-muted mb-0">{new Date(prev_val.schedule_date_time).toLocaleDateString('en-US')}</p>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col lg={6}>
+                                                                <h6 className="card-title mb-1">Schedule Time:- </h6>
+                                                            </Col>
+                                                            <Col lg={6}>
+                                                                <p className="text-muted mb-0">{new Date(prev_val.schedule_date_time).toLocaleTimeString('en-US')}</p>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col lg={6}>
+                                                                <h6 className="card-title mb-1">Status:- </h6>
+                                                            </Col>
+                                                            <Col lg={6}>
+                                                                <p className="text-muted mb-0">{prev_val.status === 4 ? 'completed' : prev_val.status === 5 ? ' Cancelled' : 'Not Updated'}</p>
+                                                            </Col>
+                                                        </Row>
                                                     </div>
-                                                    <Row>
-                                                        <Col lg={6}>
-                                                            <h6 className="card-title mb-1">Student Name:- </h6>
-                                                        </Col>
-                                                        <Col lg={6}>
-                                                            <p className="text-muted mb-0">{prev_val.student_name}</p>
-                                                        </Col>
-                                                    </Row>
-                                                    <Row>
-                                                        <Col lg={6}>
-                                                            <h6 className="card-title mb-1">Schedule Date:- </h6>
-                                                        </Col>
-                                                        <Col lg={6}>
-                                                            <p className="text-muted mb-0">{new Date(prev_val.schedule_date_time).toLocaleDateString('en-US')}</p>
-                                                        </Col>
-                                                    </Row>
-                                                    <Row>
-                                                        <Col lg={6}>
-                                                            <h6 className="card-title mb-1">Schedule Time:- </h6>
-                                                        </Col>
-                                                        <Col lg={6}>
-                                                            <p className="text-muted mb-0">{new Date(prev_val.schedule_date_time).toLocaleTimeString('en-US')}</p>
-                                                        </Col>
-                                                    </Row>
-                                                    <Row>
-                                                        <Col lg={6}>
-                                                            <h6 className="card-title mb-1">Status:- </h6>
-                                                        </Col>
-                                                        <Col lg={6}>
-                                                            <p className="text-muted mb-0">{prev_val.status === 4 ? 'completed' : prev_val.status === 5 ? ' Cancelled' : 'Not Updated'}</p>
-                                                        </Col>
-                                                    </Row>
-                                                </div>
-                                                <Link to={`/m_session_detail/${prev_val.session_id}`} className="btn btn-primary btn-sm">See Details</Link>
-                                            </Card>
-                                        </Col>
-                                    )
-                                })}
+                                                    <Link to={`/m_session_detail/${prev_val.session_id}`} className="btn btn-primary btn-sm">See Details</Link>
+                                                </Card>
+                                            </Col>
+                                        )
+                                    })}
+                                </Suspense>
                             </Row>
                         </Col>
                     </Row>

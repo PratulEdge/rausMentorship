@@ -98,6 +98,8 @@ import { Ms_GetPreTestListData } from "./mentorSide/reports/pre_test_list/saga";
 import { get_Pre_stud_reportData } from "./mentorSide/reports/pre_stud_report/saga";
 import { get_Mnt_Sess_reportData } from "./mentorSide/reports/mentor_session_report/saga";
 import { get_student_past_session_detail_Data } from "./mentorSide/reports/student_past_session/saga";
+import { GetMentor_profile_Data } from "./mentorSide/mentor_Profile/saga";
+import Ms_Edit_Mentor_Profile_AuthSaga from "./mentorSide/edit_mentor_profile/saga";
 
 //student Side
 
@@ -111,6 +113,8 @@ import book_SessionsAuthSaga from "./studentSide/bookSession/saga";
 export default function* rootSaga() {
   yield all([
     // new import
+    fork(Ms_Edit_Mentor_Profile_AuthSaga),
+    fork(GetMentor_profile_Data),
     fork(OtpResendUserauthSaga),
     fork(get_student_past_session_detail_Data),
     fork(get_Mnt_Sess_reportData),

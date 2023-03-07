@@ -15,26 +15,13 @@ import {
 } from "../../../helpers/fakebackend_helper";
 
 import { login } from "../../../API/auth";
+import { UserLogout } from "../../../API/auth";
 
 const fireBaseBackend = getFirebaseBackend();
 
 function* loginUser({ payload: { user, history } }) {
   try {
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      const response = yield call(
-        fireBaseBackend.loginUser,
-        user.email,
-        user.password
-      );
-      yield put(loginSuccess(response));
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-      const response = yield call(postJwtLogin, {
-        email: user.email,
-        password: user.password,
-      });
-      sessionStorage.setItem("authUser", JSON.stringify(response));
-      yield put(loginSuccess(response));
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "backend") {
+    if (process.env.REACT_APP_DEFAULTAUTH === "backend") {
       const response = yield call(login, { 
         email: user.email,
       });
@@ -52,9 +39,9 @@ function* loginUser({ payload: { user, history } }) {
 
 function* logoutUser() {
   try {
-    sessionStorage.removeItem("authUser");
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      const response = yield call(fireBaseBackend.logout);
+    localStorage.clear();
+    if (process.env.REACT_APP_DEFAULTAUTH === "backend") {
+      const response = yield call(UserLogout);
       yield put(logoutUserSuccess(LOGOUT_USER, response));
     } else {
       yield put(logoutUserSuccess(LOGOUT_USER, true));
@@ -64,31 +51,8 @@ function* logoutUser() {
   }
 }
 
-function* socialLogin({ payload: { data, history, type } }) {
-  try {
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      const fireBaseBackend = getFirebaseBackend();
-      const response = yield call(
-        fireBaseBackend.socialLoginUser,
-        data,
-        type,
-      );
-      sessionStorage.setItem("authUser", JSON.stringify(response));
-      yield put(loginSuccess(response));
-    } else {
-      const response = yield call(postSocialLogin, data);
-      sessionStorage.setItem("authUser", JSON.stringify(response));
-      yield put(loginSuccess(response));
-    }
-    history.push("/dashboard");
-  } catch (error) {
-    yield put(apiError(error));
-  }
-}
-
 function* authSaga() {
   yield takeEvery(LOGIN_USER, loginUser);
-  yield takeLatest(SOCIAL_LOGIN, socialLogin);
   yield takeEvery(LOGOUT_USER, logoutUser);
 }
 

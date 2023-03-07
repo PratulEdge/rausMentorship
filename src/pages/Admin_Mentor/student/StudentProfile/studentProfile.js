@@ -114,7 +114,7 @@ const StudentProfile = () => {
                                                     className="d-none d-md-inline-block">Full Detail</span>
                                             </NavLink>
                                         </NavItem>
-                                        <NavItem>
+                                        {/* <NavItem>
                                             <NavLink
                                                 href="#activities"
                                                 className={classnames({ active: activeTab === '3' })}
@@ -123,7 +123,7 @@ const StudentProfile = () => {
                                                 <i className="ri-list-unordered d-inline-block d-md-none"></i> <span
                                                     className="d-none d-md-inline-block">Batch Detail</span>
                                             </NavLink>
-                                        </NavItem>
+                                        </NavItem> */}
                                     </Nav>
                                 </div>
                                 <TabContent activeTab={activeTab} className="pt-4">
@@ -209,14 +209,14 @@ const StudentProfile = () => {
                                             </CardBody>
                                         </Card>
                                     </TabPane>
-                                    <TabPane tabId="3">
+                                    {/* <TabPane tabId="3">
                                         <Card>
                                             <CardBody>
                                                 <h5 className="card-title mb-3">Batch Detail</h5>
                                                 <div className="table-responsive">
                                                     <Table className="table-borderless mb-0">
                                                         
-                                                            <tbody>
+                                                            <tbody> */}
                                                             {/* {studentData.batch_details.map((batch_value)=>{
                                                                 return(
                                                                     <> */}
@@ -236,7 +236,7 @@ const StudentProfile = () => {
                                                                 )
                                                             
                                                             })} */}
-                                                        </tbody>
+                                                        {/* </tbody>
 
                                                         
                                                         
@@ -244,7 +244,7 @@ const StudentProfile = () => {
                                                 </div>
                                             </CardBody>
                                         </Card>
-                                    </TabPane>
+                                    </TabPane> */}
                                 </TabContent>
                             </div>
                         </Col>

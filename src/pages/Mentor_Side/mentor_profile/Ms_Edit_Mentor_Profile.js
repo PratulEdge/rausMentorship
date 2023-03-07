@@ -13,17 +13,29 @@ import { useSelector, useDispatch } from "react-redux";
 import { mentorProfile } from '../../../store/actions';
 import { mentorEditUser } from '../../../store/actions';
 import { cityDetail, stateDetail, subjectExpert } from '../../../store/actions';
+import { ms_mentor_profile } from '../../../store/actions';
+import { msMentorEditProfile } from '../../../store/actions';
 
-const EditMentorProfile = (props) => {
+
+const Ms_EditMentorProfile = (props) => {
 
     const dispatch = useDispatch();
     const { id } = useParams();
     console.log(id, "id Edit Page")
-
-    const { userData } = useSelector((state) => ({
-        userData: state.MentorProfileData.userData,
+    const { ms_mentor_profile_Data } = useSelector((state) => ({
+        ms_mentor_profile_Data: state.Ms_mentor_profile_Data.ms_mentor_profile_Data,
     }));
-    // console.log(userData.state?.id,"state id value")
+    useEffect(() => {
+        dispatch(ms_mentor_profile());
+    }, [dispatch]);
+
+
+    // const { ms_mentor_profile_Data } = useSelector((state) => state.Ms_mentor_profile_Data.ms_mentor_profile_Data);
+
+    // const { ms_mentor_profile_Data } = useSelector((state) => ({
+    //     ms_mentor_profile_Data: state.MentorProfileData.ms_mentor_profile_Data,
+    // }));
+    console.log(ms_mentor_profile_Data,"state id value")
     const [state_id, setState_id] = useState(null)
 
     const [activeTab, setActiveTab] = useState("1");
@@ -70,16 +82,6 @@ const EditMentorProfile = (props) => {
         console.log(event.target.value, "value selected")
     };
 
-    const subject_expert = [
-        {
-            options: [
-                { label: '-- Select Profession --', value: '-- Select Profession --' },
-                { label: "Civics", value: "63a973e33669e5b4b79d2294" },
-                { label: "Histroy", value: "63a94ef93669e5b4b79d2291" },
-            ],
-        },
-    ];
-
     const is_active = [
         {
             options: [
@@ -90,7 +92,7 @@ const EditMentorProfile = (props) => {
         }
     ]
 
-    console.log(userData.country?.name, userLogin.name, "user data country Edit")
+    // console.log(ms_mentor_profile_Data.country?.name, userLogin.name, "user data country Edit")
 
     const productStatus = [
         {
@@ -108,18 +110,18 @@ const EditMentorProfile = (props) => {
         enableReinitialize: true,
 
         initialValues: {
-            name: userLogin.name || userData.name || '',
-            email: userLogin.email || userData.email || '',
-            mobile: userLogin.mobile || userData.mobile || '',
-            subject_expert: userLogin.subject_expert?.id || userData.subject_expert?.id || '',
-            profession: userLogin.profession || userData.profession || '',
-            qualification: userLogin.qualification || userData.qualification || '',
-            address_1_line_1: userLogin.address_1_line_1 || userData.address_1_line_1 || '',
-            city: userLogin.city?.id || userData.city?.id || '',
-            state: userLogin.state?.id || userData.state?.id || '',
-            country: userLogin.country?.id || userData.country?.id || '',
-            pincode: userLogin.pincode || userData.pincode || '',
-            is_active: userLogin.is_active || userData.is_active || '',
+            name: userLogin.name || ms_mentor_profile_Data.name || '',
+            email: userLogin.email || ms_mentor_profile_Data.email || '',
+            mobile: userLogin.mobile || ms_mentor_profile_Data.mobile || '',
+            subject_expert: userLogin.subject_expert?.id || ms_mentor_profile_Data.subject_expert?.id || '',
+            profession: userLogin.profession || ms_mentor_profile_Data.profession || '',
+            qualification: userLogin.qualification || ms_mentor_profile_Data.qualification || '',
+            address_1_line_1: userLogin.address_1_line_1 || ms_mentor_profile_Data.address_1_line_1 || '',
+            city: userLogin.city?.id || ms_mentor_profile_Data.city?.id || '',
+            state: userLogin.state?.id || ms_mentor_profile_Data.state?.id || '',
+            country: userLogin.country?.id || ms_mentor_profile_Data.country?.id || '',
+            pincode: userLogin.pincode || ms_mentor_profile_Data.pincode || '',
+            is_active: userLogin.is_active || ms_mentor_profile_Data.is_active || '',
         },
         validationSchema: Yup.object({
             name: Yup.string().required("Please Enter Your Name"),
@@ -137,7 +139,7 @@ const EditMentorProfile = (props) => {
         }),
         onSubmit: (values) => {
             console.log(values, "in submit Edit")
-            dispatch(mentorEditUser(values, props.history, id));
+            dispatch(msMentorEditProfile(values, props.history, id));
         }
     });
     useEffect(() => {
@@ -146,19 +148,19 @@ const EditMentorProfile = (props) => {
     useEffect(() => {
         dispatch(stateDetail());
         dispatch(subjectExpert());
-        dispatch(mentorProfile(id));
-        setState_id(userData.state?.id)
-    }, [dispatch, userData.state?.id]);
+        // dispatch(mentorProfile(id));
+        setState_id(ms_mentor_profile_Data.state?.id)
+    }, [dispatch, ms_mentor_profile_Data.state?.id]);
 
 
 
     document.title = "Profile Settings | Velzon - React Admin & Dashboard Template";
     console.log("in eddit section")
 
-    // if (userData.is_active) {
+    // if (ms_mentor_profile_Data.is_active) {
     //     is_active[0].options.unshift({
-    //       label: userData.is_active,
-    //       value: userData.is_active,
+    //       label: ms_mentor_profile_Data.is_active,
+    //       value: ms_mentor_profile_Data.is_active,
     //     });
     //   }
 
@@ -322,9 +324,9 @@ const EditMentorProfile = (props) => {
                                                                     validation.touched.profession && validation.errors.profession ? true : false
                                                                 }
                                                             >
-                                                                {/* {userData.is_active ? <option className='text-muted' value={userData.is_active}>`${userData.is_active}`</option> : <option className='text-muted' value={0}>-- Select Status --</option>}                                */}
+                                                                {/* {ms_mentor_profile_Data.is_active ? <option className='text-muted' value={ms_mentor_profile_Data.is_active}>`${ms_mentor_profile_Data.is_active}`</option> : <option className='text-muted' value={0}>-- Select Status --</option>}                                */}
                                                                 {/* <option className="text-muted" value="">
-                                                                    {userData.is_active || "-- Select Status --"}
+                                                                    {ms_mentor_profile_Data.is_active || "-- Select Status --"}
                                                                 </option> */}
                                                                 {is_active.map((item, key) => (
                                                                     <React.Fragment key={key}>
@@ -447,7 +449,7 @@ const EditMentorProfile = (props) => {
                                                                     validation.touched.state && validation.errors.state ? true : false
                                                                 }
                                                             >
-                                                                {/* {userData.state?.name ? <option className='text-muted' value={userData.state?.id}>{userData.state?.name}</option> : <option className='text-muted' value={0}>-- Select State --</option>} */}
+                                                                {/* {ms_mentor_profile_Data.state?.name ? <option className='text-muted' value={ms_mentor_profile_Data.state?.id}>{ms_mentor_profile_Data.state?.name}</option> : <option className='text-muted' value={0}>-- Select State --</option>} */}
                                                                 <option className='text-muted' value={0}>-- Select State --</option>
                                                                 {stateData?.map((item, key) => (
                                                                     <React.Fragment key={key}>
@@ -474,7 +476,7 @@ const EditMentorProfile = (props) => {
                                                                     validation.touched.city && validation.errors.city ? true : false
                                                                 }
                                                             >
-                                                                {/* {userData.city?.name ? <option className='text-muted' value={userData.city?.id}>{userData.city?.name}</option> : <option className='text-muted' value={0}>-- Select City --</option>} */}
+                                                                {/* {ms_mentor_profile_Data.city?.name ? <option className='text-muted' value={ms_mentor_profile_Data.city?.id}>{ms_mentor_profile_Data.city?.name}</option> : <option className='text-muted' value={0}>-- Select City --</option>} */}
                                                                 <option className='text-muted' value={0}>-- Select State --</option>
                                                                 {cityData?.map((item, key) => (
                                                                     <React.Fragment key={key}>
@@ -501,7 +503,7 @@ const EditMentorProfile = (props) => {
                                                                     validation.touched.country && validation.errors.country ? true : false
                                                                 }
                                                             >
-                                                                {/* {userData.state?.country ? <option className='text-muted' value={userData.country?.id}>{userData.country?.name}</option> : <option className='text-muted' value={0}>-- Select Country --</option>} */}
+                                                                {/* {ms_mentor_profile_Data.state?.country ? <option className='text-muted' value={ms_mentor_profile_Data.country?.id}>{ms_mentor_profile_Data.country?.name}</option> : <option className='text-muted' value={0}>-- Select Country --</option>} */}
                                                                 <option className='text-muted' value={0}>-- Select Country --</option>
                                                                 <option value='101'>India</option>
 
@@ -552,4 +554,4 @@ const EditMentorProfile = (props) => {
     );
 };
 
-export default EditMentorProfile;
+export default Ms_EditMentorProfile;

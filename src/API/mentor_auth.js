@@ -109,12 +109,27 @@ const headers = {
     })
   }
 
-
-  export const Prelims_series = () => {
+  export const Ms_Mentor_Profile = () => {
     return new Promise((resolve, reject) => {
       axios
         .get(
-          `http://prep.edgecanvas.com/api/v1/mentorship-test-series/?series_type=prelims&email=ecv1@yopmail.com`, { 
+          `http://13.127.98.218/mentorship/mentor/update-profile/`, { headers }
+        )
+        .then(res => {
+          resolve(res.detail)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
+
+  export const Prelims_series = (email, examType) => {
+    console.log(email, examType," series email hitted")
+    // console(series, "payload data")
+    return new Promise((resolve, reject) => {
+      axios
+        .get(
+          `http://prep.edgecanvas.com/api/v1/mentorship-test-series/?series_type=${examType}&email=${email}`, { 
             "Content-Type": "multipart/form-data",
             // "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow- ": "Content-Type",
@@ -128,11 +143,11 @@ const headers = {
     })
   }
 
-  export const Prelims_Test_List = () => {
+  export const Prelims_Test_List = (email, examType, series_id) => {
     return new Promise((resolve, reject) => {
       axios
         .get(
-          `http://prep.edgecanvas.com/api/v1/mentorship-test/?series_type=prelims&email=ecv1@yopmail.com&test_series_id=63d7e0e20ea2374c4983e51a`, { 
+          `http://prep.edgecanvas.com/api/v1/mentorship-test/?series_type=${examType}&email=${email}&test_series_id=${series_id}`, { 
             "Content-Type": "multipart/form-data",
             // "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow- ": "Content-Type",
@@ -147,11 +162,11 @@ const headers = {
   }
 
 
-  export const Prelims_Test_Report = (id) => {
+  export const Prelims_Test_Report = (id,email,examType) => {
     return new Promise((resolve, reject) => {
       axios
         .get(
-          `http://prep.edgecanvas.com/api/v1/mentorship-test-report/?series_type=prelims&email=ecv1@yopmail.com&attempt_id=${id}`, { 
+          `http://prep.edgecanvas.com/api/v1/mentorship-test-report/?series_type=${examType}&email=${email}&attempt_id=${id}`, { 
             "Content-Type": "multipart/form-data",
             // "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow- ": "Content-Type",
@@ -188,6 +203,40 @@ const headers = {
         )
         .then(res => {
           resolve(res.detail)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
+  export const Mains_series = () => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(
+          `http://prep.edgecanvas.com/api/v1/mentorship-test-series/?series_type=mains&email=ecv1@yopmail.com`, { 
+            "Content-Type": "multipart/form-data",
+            // "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow- ": "Content-Type",
+            "Authorization": `token ${localStorage.getItem("token")}`
+          } 
+        )
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
+  export const Ms_Edit_Mentor_Profile_value = (id, user) => {
+    console.log(id, "Edit user id")
+    return new Promise((resolve, reject) => {
+      console.log(id, "in Edit api")
+      axios
+        .patch(
+          `http://13.127.98.218/mentorship/mentor/update-profile/${id}/`,user, {headers }
+        )
+        .then(res => {
+          resolve(res)
+          console.log(res, "Edit res data")
         })
         .catch(error => reject(error))
     })

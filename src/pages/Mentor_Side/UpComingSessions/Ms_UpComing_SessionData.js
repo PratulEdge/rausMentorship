@@ -59,7 +59,8 @@ const Ms_UpComing_SessionData = () => {
             detail.status,
             detail.schedule_date_time,
             detail.join_url,
-            detail.session_id
+            detail.session_id,
+            
 
         ]
 
@@ -179,14 +180,12 @@ const Ms_UpComing_SessionData = () => {
                     },
                     {
                         name: 'Actions',
-                        formatter: (cell) => _(<UncontrolledDropdown className="dropdown d-inline-block">
+                        formatter: (cell,row) => _(<UncontrolledDropdown className="dropdown d-inline-block">
                             <DropdownToggle className="btn btn-soft-secondary btn-sm" tag="button">
                                 <i className="ri-more-fill align-middle"></i>
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-end dropdown-flow" style={{ position: "absolute", inset: "auto 0px auto auto", margin: "0px", transform: "translate(0px, 23px)" }}>
                                 <DropdownItem href={`/m_session_detail/${cell}`}><i className="ri-eye-fill align-bottom me-2 text-muted"></i>View</DropdownItem>
-                                {/* <DropdownItem href="/edit-mentor-profile" className='edit-item-btn'><i className="ri-pencil-fill align-bottom me-2 text-muted"></i>Delete</DropdownItem> */}
-                                {/* <DropdownItem onClick={() => tog_center()} className='remove-item-btn'> <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete </DropdownItem> */}
                             </DropdownMenu>
                         </UncontrolledDropdown>)
                     },

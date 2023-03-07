@@ -12,10 +12,11 @@ import { Prelims_series } from "../../../../API/mentor_auth";
 
 
 function* Ms_getPreTestSeries(payload) {
-  console.log(payload.payload.actionType ,"student id inside function")
-    console.log("inside function")
+  console.log( payload.payload.email, payload.payload.examType ,"student id inside function exam type")
+    console.log(payload.payload,"inside function")
   try {
-    const response = yield call(Prelims_series); //payload.payload.id
+    const { email, examType } = payload.payload;
+    const response = yield call(Prelims_series, email, examType); //payload.payload.id
     yield put(preTestSeriesSuccess(PRE_TEST_SERIES, response));
     console.log(response, "response")
   } catch (error) {

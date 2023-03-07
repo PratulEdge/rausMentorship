@@ -11,10 +11,10 @@ import {
     };
   };
   
-  export const preTestListProfile = ( actionType) => {
+  export const preTestListProfile = ( email, examType, series_id,actionType) => {
     return {
       type:  PRE_TEST_LIST,
-      payload: {actionType},
+      payload: {actionType ,series_id,examType,email},
     };
   };
   

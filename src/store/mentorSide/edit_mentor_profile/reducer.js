@@ -1,31 +1,30 @@
 import {
-  RESEND_OTP,
-  RESEND_OTP_SUCCESS,
-  RESEND_OTP_API_ERROR,
+  MS_EDIT_MENTOR_PROFILE_API_ERROR,
+  MS_EDIT_MENTOR_PROFILE_SUCCESS,
+  MS_EDIT_MENTOR_PROFILE,
 } from "./actionTypes";
 
 const initialState = {
   error: "",
   loading: false,
-  user: '',
+  user: null,
 };
 
-const ResendOtpData = (state = initialState, action) => {
-  console.log(action.type, "action type value dsadsads")
+const msMentorEditProfileData = (state = initialState, action) => {
   switch (action.type) {
-    case RESEND_OTP:
+    case MS_EDIT_MENTOR_PROFILE:
       state = {
         ...state,
         loading: true,
       };
       break;
-    case RESEND_OTP_SUCCESS:
+    case MS_EDIT_MENTOR_PROFILE_SUCCESS:
       state = {
         ...state,
         loading: false,
       };
       break;
-    case RESEND_OTP_API_ERROR:
+    case MS_EDIT_MENTOR_PROFILE_API_ERROR:
       state = {
         ...state,
         error: action.payload.data,
@@ -40,4 +39,4 @@ const ResendOtpData = (state = initialState, action) => {
   return state;
 };
 
-export default ResendOtpData;
+export default msMentorEditProfileData;

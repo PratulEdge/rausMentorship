@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, Col, Container, Row, Button, Form } from 'reactstrap';
+import { Card, CardBody, Col, Container, Row, Button, FormFeedback, Form } from 'reactstrap';
 import ParticlesAuth from "./ParticlesAuth";
 import { useSelector, useDispatch } from 'react-redux';
 import OTPInput from 'react-otp-input';
@@ -15,14 +15,24 @@ import { useFormik } from "formik";
 import TitleHead from './TitleHead';
 import logoImg from '../../assets/img_raus/rauias_logo.png'
 import { number } from 'yup';
+import { resendOtp } from '../../store/actions';
 
 
 const OtpAuth = (props) => {
 
     const [OTP, setOTP] = useState("");
-
+    const [timer, setTimer] = useState(30);
     const handleChange = (OTP) => {
         setOTP(OTP)
+    }
+    useEffect(() => {
+        if (timer > 0) {
+            setTimeout(() => setTimer(timer - 1), 1000);
+        }
+    }, [timer]);
+    function handleResendOtp() {
+        dispatch(resendOtp());
+        setTimer(30);
     }
     console.log(OTP)
 
@@ -49,26 +59,24 @@ const OtpAuth = (props) => {
         enableReinitialize: true,
 
         initialValues: {
-            mobile: userOTP.mobile|| userMobile || '',
-            email: userOTP.email || userMail || '',
             token: userOTP.token || "" || '',
+            mobile: userOTP.mobile || userMobile || '',
+            email: userOTP.email || userMail || '',
         },
 
         validationSchema: Yup.object({
-            // mobile: Yup.number().required("Please Enter Your Mobile Number"),
-            // email: Yup.string().required("Please Enter Your Email"),
             token: Yup.string().required("Please Enter Your OTP"),
         }),
         onSubmit: (values) => {
-            console.log("fvdjsfvdsjfjdsfjsfsjfdsjfdsjfdjfdsjfdsjfbj")
-            console.log(values, "values")
+            console.log(values, OTP, "values")
             dispatch(otpverify(values, props.history));
         }
     });
-    console.log(validation.values, "validation")
     const { error } = useSelector(state => ({
         error: state.Login.error,
     }));
+
+
 
     document.title = "OTP | Rau's - MentorShip";
 
@@ -109,26 +117,40 @@ const OtpAuth = (props) => {
                                                     }}
                                                     action="#">
                                                     <Row>
-                                                        <OTPInput
-                                                            value={OTP}
-                                                            onChange={handleChange}
-                                                            id="token"
-                                                            name="token"
-                                                            type="number"
-                                                            separator={"-"}
-                                                            inputStyle={"col-2 otp-input text-center"}
-                                                            numInputs={6}
-                                                            otpType="number"
-                                                            disabled={false}
-                                                        />
+                                                        <div className='form-group'>
+                                                            <OTPInput
+                                                                id="token"
+                                                                name="token"
+                                                                type="number"
+                                                                value={OTP}
+                                                                onChange={handleChange}
+                                                                separator={"-"}
+                                                                inputStyle={"col-2 otp-input text-center"}
+                                                                numInputs={6}
+                                                                otpType="number"
+                                                                disabled={false}
+                                                                required
+                                                            />
+                                                            {validation.touched.token && validation.errors.token ? (
+                                                                <FormFeedback type="invalid">{validation.errors.token}</FormFeedback>
+                                                            ) : null}
+                                                        </div>
                                                     </Row>
                                                     <div className="mt-3">
-                                                    <Button color="success" className="w-100" type="submit" >Confirm</Button>
-                                                </div>
+                                                        <Button color="success" className="w-100" type="submit" >Confirm</Button>
+                                                    </div>
                                                 </Form>
-                                               
-                                                <div className="mt-4 text-center">
-                                                    <p className="mb-0">Didn't receive a code ? <Link to="/auth-pass-reset-basic" className="fw-semibold text-primary text-decoration-underline">Resend</Link> </p>
+
+                                                <div>
+                                                    {timer === 0 ? (
+                                                        <div className="mt-4 text-center">
+                                                            <p className="mb-0">Didn't receive a code ? <Link to="#" onClick={handleResendOtp} className="fw-semibold text-primary text-decoration-underline">Resend</Link> </p>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="mt-4 text-center">
+                                                            <p className="mb-0">Resend code in {timer} seconds</p>
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 <div className="mt-4 text-center">
                                                     <p className="mb-0">Change Login Credential <Link to="/login" className="fw-semibold text-primary text-decoration-underline">SignIn</Link> </p>

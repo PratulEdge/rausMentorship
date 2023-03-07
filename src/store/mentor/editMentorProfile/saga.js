@@ -43,6 +43,9 @@ function* mentorEdit({ payload: { user, history, id } }) {
         profession: user.profession,
         qualification: user.qualification,
         address_1_line_1: user.address_1_line_1,
+        city:user.city,
+        state: user.state,
+        country: user.country,
         pincode: user.pincode,
         is_active: user.is_active,
       });

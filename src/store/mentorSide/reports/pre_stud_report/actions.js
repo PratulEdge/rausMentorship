@@ -11,10 +11,10 @@ import {
     };
   };
   
-  export const Pre_stud_report = ( id,actionType) => {
+  export const Pre_stud_report = ( id,email,examType,actionType) => {
     return {
       type:  PRE_STUD_REPORT,
-      payload: {actionType, id},
+      payload: {actionType,examType,email, id},
     };
   };
   

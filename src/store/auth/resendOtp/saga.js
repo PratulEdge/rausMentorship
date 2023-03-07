@@ -6,46 +6,26 @@ import { resendOtpApiError, resendOtpSuccess } from "./actions";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-//Include Both Helper File with needed methods
-import { getFirebaseBackend } from "../../../helpers/firebase_helper";
-import {
-  postFakeLogin,
-  postJwtLogin,
-  postSocialLogin,
-} from "../../../helpers/fakebackend_helper";
 import { resendOtp } from "../../../API/auth";
 
-const fireBaseBackend = getFirebaseBackend();
 
 function* OtpResendUser({ payload: { user, history } }) {
+  console.log("in saga value")
   try {
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      const response = yield call(
-        fireBaseBackend.loginUser,
-        user.email,
-        user.password
-      );
-      yield put(resendOtpSuccess(response));
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-      const response = yield call(postJwtLogin, {
-        email: user.email,
-        password: user.password,
-      });
-      sessionStorage.setItem("authUser", JSON.stringify(response));
-      yield put(resendOtpSuccess(response));
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "backend") {
-      const response = yield call(resendOtp, { 
+    if (process.env.REACT_APP_DEFAULTAUTH === "backend") {
+      const response = yield call(resendOtp, {
         email: localStorage.getItem('email'),
       });
+      console.log(response, "response value")
       if (response.type === "success") {
         history.push("/otp-auth");
       } else {
         yield put(resendOtpApiError(response));
+        toast.error("Enter a valid email address.", { autoClose: 3000 });
       }
     }
   } catch (error) {
     yield put(resendOtpApiError(error));
-    toast.error("Enter a valid email address.", { autoClose: 3000 });
   }
 }
 

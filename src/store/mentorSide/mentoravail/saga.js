@@ -2,6 +2,7 @@ import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { MS_MENTOR_AVAIL_USER } from "./actionTypes";
 import { msMentorAvailApiError, msMentorAvailSuccess } from "./actions";
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 import 'react-toastify/dist/ReactToastify.css';
 import { Ms_MentorAvial } from "../../../API/mentor_auth";
 
@@ -16,7 +17,15 @@ function* msMentorAvailability({ payload: { user, history } }) {
       });
       console.log(response, "create response data")
       if (response.type === "success") {
-        toast.success("Availability Added Successfully", { autoClose: 3000 });
+        Swal.fire({
+          icon: 'success',
+          title: 'Great!',
+          text: 'Successfully Created Availability!',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(() => {
+          window.location.href = "/ms_mentor_availability";
+        });
       } 
       else {
         yield put(msMentorAvailApiError(response));

@@ -23,7 +23,9 @@ function* book_Sessions({ payload: { user, history, id } }) {
       if (response.type == "success") {
         console.log("submitted book session")
         toast.success("Session Booked Successfully", { autoClose: 3000 });
-        history.push("/book-session");
+        setTimeout(() => {
+          window.location.href = '/book-session';
+        }, 3000);
       } else {
         console.log("error")
         yield put(book_SessionsApiError(response));
@@ -31,7 +33,7 @@ function* book_Sessions({ payload: { user, history, id } }) {
     }
   } catch (error) {
     yield put(book_SessionsApiError(error));
-    toast.error("Session erere Booked Successfully", { autoClose: 3000 });
+    toast.error("Select Mentor Availability", { autoClose: 3000 });
   }
 }
 

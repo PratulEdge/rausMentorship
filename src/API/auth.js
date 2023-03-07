@@ -33,6 +33,23 @@ export const login = loginObject => {
   })
 }
 
+export const UserLogout = () => {
+  return new Promise((resolve, reject) => {
+    // const headers = {
+    //   "Content-Type": "multipart/form-data",
+    //   "Access-Control-Allow-Origin": "*",
+    //   "Access-Control-Allow- ": "Content-Type",
+    // }
+    axios
+      .post('http://13.127.98.218/mentorship/logout/')
+      .then(response => {
+        console.log(response, "inside api")
+        resolve(response)
+      })
+      .catch(error => reject(error))
+  })
+}
+
 export const resendOtp = resendObject => {
   return new Promise((resolve, reject) => {
     const headers = {
@@ -378,3 +395,23 @@ export const UpComingSession = () => {
       .catch(error => reject(error))
   })
 }
+
+
+//
+
+export const get_Session_id = (id) => {
+  return new Promise((resolve, reject) => {
+    console.log(id, "in mentorList api")
+    axios
+      .get(
+        `http://13.127.98.218/mentorship/slot-avail/`, { headers }
+      )
+      .then(res => {
+        resolve(res.detail)
+        console.log(res.detail, "res data")
+      })
+      .catch(error => reject(error))
+  })
+}
+
+//

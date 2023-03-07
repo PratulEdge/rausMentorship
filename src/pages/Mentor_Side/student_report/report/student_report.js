@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import classnames from 'classnames';
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Card, CardBody, CardHeader, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, Label, Nav, NavItem, NavLink, Pagination, PaginationItem, PaginationLink, Progress, Row, TabContent, Table, TabPane, UncontrolledCollapse, UncontrolledDropdown } from 'reactstrap';
+import { Card, CardBody, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, Label, Nav, NavItem, NavLink, Pagination, PaginationItem, PaginationLink, Progress, Row, TabContent, Table, TabPane, UncontrolledCollapse, UncontrolledDropdown } from 'reactstrap';
 import { useSelector, useDispatch } from "react-redux";
-import { projects, document } from '../../../../common/data';
-// import MentorProfileSession from '../../MentorProfile/Session/sessions';
-import { studentProfile } from '../../../../store/actions';
-import { Ms_studentProfile } from '../../../../store/actions';
+import {document } from '../../../../common/data';
 import { Pre_stud_report } from '../../../../store/actions';
-import StudentProfileSession from '../../../Admin_Mentor/student/StudentProfile/Session/sessions';
-// import StudentProfileSession from '../../Session/sessions';
 
 
 const Ms_Student_Report = () => {
@@ -23,11 +18,15 @@ const Ms_Student_Report = () => {
         }
     };
     const { id } = useParams();
-    console.log(id, "id")
+    
     const dispatch = useDispatch();
     const { pre_stud_report_Data } = useSelector((state) => ({
         pre_stud_report_Data: state.Pre_stud_report_Data.pre_stud_report_Data,
     }));
+    const location = useLocation();
+    // const { email, examType } = location.state;
+    const examType = location.state?.examType;
+    const email = location.state?.email;
 
     console.log(reportData, " reportData report datd")
     useEffect(() => {
@@ -35,9 +34,10 @@ const Ms_Student_Report = () => {
     }, [pre_stud_report_Data])
 
     useEffect(() => {
-        dispatch(Pre_stud_report(id));
+        dispatch(Pre_stud_report(id,email,examType));
     }, [dispatch]);
 
+    console.log(id,email,examType, "id")
 
     document.title = "Profile | Rau's MentorShip - Mentor Profile";
 

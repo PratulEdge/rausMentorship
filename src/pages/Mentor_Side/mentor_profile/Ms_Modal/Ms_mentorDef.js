@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Modal, ModalHeader, ModalBody, Card, CardBody, CardHeader, Col, Container, Form, FormFeedback, Input, Label, Nav, NavItem, NavLink, Row, TabContent, TabPane } from 'reactstrap';
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { cityDetail, stateDetail, subjectExpert } from '../../../store/actions';
-import { mentorEditUser } from '../../../store/actions';
-import { addMentorUser } from '../../../store/actions';
+import { cityDetail, stateDetail, subjectExpert } from '../../../../store/actions';
+// import { mentorEditUser } from '../../../store/actions';
+// import { addMentorUser } from '../../../store/actions';
 import { useSelector, useDispatch } from "react-redux";
+import { msMentorEditProfile } from '../../../../store/actions';
 
 
-const MyModal = (props) => {
+const Ms_MentorDef = (props) => {
 
     const [state_id, setState_id] = useState('')
     const [selected, setSelected] = useState('')
@@ -16,6 +17,10 @@ const MyModal = (props) => {
     const [address, setAddress] = useState('')
     const [profession, setProfession] = useState('')
     const dispatch = useDispatch();
+
+    // const cityData = useSelector((state) => state.City.cityData);
+    // const stateData = useSelector((state) => state.State.stateData);
+    // const subjectExpertData = useSelector((state) => state.SubjectExpertData.subjectExpertData.detail);
     const { cityData } = useSelector((state) => ({
         cityData: state.City.cityData,
     }));
@@ -75,6 +80,7 @@ const MyModal = (props) => {
     console.log(cityData, "city data value", stateData, "State selected", subjectExpertData, "Subject Expert")
 
     let id = props.userId
+    console.log(id, "value print")
 
     const validation = useFormik({
         // enableReinitialize : use this flag when initial values needs to be changed
@@ -103,13 +109,8 @@ const MyModal = (props) => {
         }),
         onSubmit: (values) => {
             console.log(values, "modal Value")
-            dispatch(addMentorUser(values, props.history, id));
+            dispatch(msMentorEditProfile(values, props.history, id));
             props.toggle();
-
-            // dispatch(mentorCreateUser(values, props.history));
-            setTimeout(function () {
-                window.location.reload();
-            }, 1500);
         }
     });
     return (
@@ -323,4 +324,4 @@ const MyModal = (props) => {
     );
 }
 
-export default MyModal;
+export default Ms_MentorDef;

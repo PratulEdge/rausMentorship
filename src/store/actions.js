@@ -88,6 +88,8 @@ export * from './mentorSide/reports/pre_test_list/actions'
 export * from './mentorSide/reports/pre_stud_report/actions'
 export * from './mentorSide/reports/mentor_session_report/actions'
 export * from './mentorSide/reports/student_past_session/actions'
+export * from './mentorSide/mentor_Profile/actions'
+export * from './mentorSide/edit_mentor_profile/actions'
 
 // Student side
 export * from './studentSide/studentDash/actions'

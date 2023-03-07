@@ -41,6 +41,7 @@
     color: $info;
   }
   &.swal2-success {
+    display: block !important;
     [class^=swal2-success-line]{
       background-color: $success;
     }

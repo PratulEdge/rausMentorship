@@ -7,19 +7,15 @@ axios.defaults.baseURL = api.API_URL;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 // content type
-const token = JSON.parse(sessionStorage.getItem("authUser")) ? JSON.parse(sessionStorage.getItem("authUser")).token : null;
+const token = localStorage.getItem("token") ? localStorage.getItem("token").token : null;
 if(token)
 axios.defaults.headers.common["Authorization"] = "token " + token;
 console.log(token, "token3")
-// console.log(headers, "headers")
-
-// intercepting to capture errors
 axios.interceptors.response.use(
   function (response) {
     return response.data ? response.data : response;
   },
   function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
     let message;
     switch (error.status) {
       case 500:

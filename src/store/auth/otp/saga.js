@@ -22,21 +22,7 @@ const fireBaseBackend = getFirebaseBackend();
 function* otpverify({ payload: { user, history } }) {
   console.log(user, "user Vlaue")
   try {
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      const response = yield call(
-        fireBaseBackend.loginUser,
-        user.email,
-        user.password
-      );
-      yield put(loginSuccess(response));
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-      const response = yield call(postJwtLogin, {
-        email: user.email,
-        token: user.token,
-      });
-      sessionStorage.setItem("authUser", JSON.stringify(response));
-      yield put(loginSuccess(response));
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "backend") {
+    if (process.env.REACT_APP_DEFAULTAUTH === "backend") {
       console.log(user, "saga otp inSide function")
       if (user.mobile) {
         const response = yield call(otp_verify, {

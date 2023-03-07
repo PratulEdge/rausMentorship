@@ -32,7 +32,6 @@ const AttendantSessionData = () => {
     const data = A_Session.map(((detail, index) =>
         [
             detail.serial = index + 1,
-            // detail.session_id,
             detail.mentor_name,
             detail.student_name,
             new Date(detail.schedule_date_time).toLocaleDateString('en-US'),
@@ -79,7 +78,7 @@ const AttendantSessionData = () => {
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
                             <DropdownItem href={`/session-details/${cell}`}><i className="ri-eye-fill align-bottom me-2 text-muted"></i>View</DropdownItem>
-                            <DropdownItem href="/edit-mentor-profile" className='edit-item-btn'><i className="ri-pencil-fill align-bottom me-2 text-muted"></i>Edit</DropdownItem>
+                            {/* <DropdownItem href="/edit-mentor-profile" className='edit-item-btn'><i className="ri-pencil-fill align-bottom me-2 text-muted"></i>Edit</DropdownItem> */}
                             {/* <DropdownItem onClick={() => tog_center()} className='remove-item-btn'> <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete </DropdownItem> */}
                         </DropdownMenu>
                     </UncontrolledDropdown>)

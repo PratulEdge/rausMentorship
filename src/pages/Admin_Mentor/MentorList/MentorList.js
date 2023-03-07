@@ -31,10 +31,17 @@ import { BaseExample } from '../MentorList/MentorListData';
 
 const MentorList = (props) => {
 
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
     const dispatch = useDispatch();
     const { user } = useSelector(state => ({
         user: state.Account.user,
     }));
+
+    const toggleModal = () => {
+        setModalIsOpen(!modalIsOpen);
+        // setUserId(id);
+    }
   const [error, setError] = useState('');
       console.log(error)
     const handleChange = (event) => {
@@ -62,7 +69,7 @@ const MentorList = (props) => {
             mobile: Yup.number().required("Please Enter Your Mobile No."),
         }),
         onSubmit: (values) => {
-            dispatch(mentorCreateUser(values, props.history));
+            dispatch(mentorCreateUser(values, props.history));            
             // window.location.reload(false);
         }
     });
@@ -98,7 +105,7 @@ const MentorList = (props) => {
                                             <div className="hstack text-nowrap gap-2">
                                                 <button
                                                     className="btn btn-info add-btn"
-                                                    onClick={() => tog_list()}
+                                                    onClick={() => toggleModal()}
                                                 >
                                                     <i className="ri-add-fill me-1 align-bottom"></i> Add
                                                     Mentor
@@ -116,7 +123,8 @@ const MentorList = (props) => {
                             </Card>
                         </Col>
                     </Row>
-                    <Modal isOpen={modal_list} toggle={() => { tog_list(); }} centered >
+                    {modalIsOpen && <CreateMentor isOpen={modalIsOpen} toggle={toggleModal} />}
+                    {/* <Modal isOpen={modal_list} toggle={() => { tog_list(); }} centered >
                         <ModalHeader className="bg-light p-3 col-12">
                             Add Mentor
                             <Button type="button" onClick={() => { setmodal_list(false); }} className="btn-close" aria-label="Close" style={{ float: 'right' }} >
@@ -199,7 +207,7 @@ const MentorList = (props) => {
                                 </div>
                             </form>
                         </ModalBody>
-                    </Modal>
+                    </Modal> */}
                 </Container>
             </div>
         </React.Fragment>

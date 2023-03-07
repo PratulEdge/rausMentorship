@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getLoggedinUser } from "../../helpers/api_helper";
 
 const useProfile = () => {
+  console.log("sdbsmdbsdmasmdsmabdsma")
   const userProfileSession = getLoggedinUser();
   var token =
   userProfileSession &&

@@ -243,6 +243,7 @@ import Ms_MentorAvailibility from "../pages/Mentor_Side/MentorAvailability/Ms_me
 import Mnt_Session_Report from "../pages/Mentor_Side/mentor_report/mentor_session_report";
 import Active_student_List from "../pages/Mentor_Side/student_all_session_report/student_active/active_Student_List";
 import All_Student_Past_Session_Detail from "../pages/Mentor_Side/student_all_session_report/all_session_detail";
+import Ms_Mentor_Profile from "../pages/Mentor_Side/mentor_profile/Ms_Mentor_Profile";
 
 
 ///Student Side
@@ -256,6 +257,8 @@ import Ss_SessionDetail from "../pages/studentSide/Dashboard/S_T_UpComingSession
 import Ms_StudentLists from "../pages/Mentor_Side/student_report/student_list/StudentList";
 import Ms_StudentProfile_Series from "../pages/Mentor_Side/student_report/report/student_report_series";
 import Ms_Student_Report from "../pages/Mentor_Side/student_report/report/student_report";
+import Ms_EditMentorProfile from "../pages/Mentor_Side/mentor_profile/Ms_Edit_Mentor_Profile";
+import Ms_Student_Mains_Report from "../pages/Mentor_Side/student_report/mains_report/student_mains_report";
 
 const user_type = localStorage.getItem("user_type")
 console.log(user_type, "User type")
@@ -460,11 +463,11 @@ const authProtectedRoutes = user_type === '2' ? [
 
   // {path:"/mentor-dashboard", component:MentorDashboard},
 
-  {
-    path: "/",
-    exact: true,
-    component: () => <Redirect to="/dashboard" />,
-  },
+  // {
+  //   path: "/",
+  //   exact: true,
+  //   component: () => <Redirect to="/dashboard" />,
+  // },
 ]:user_type === '3' ?[
   //Mentor Side
 
@@ -482,6 +485,10 @@ const authProtectedRoutes = user_type === '2' ? [
   {path: '/mentor-sessions-report', component:Mnt_Session_Report},
   {path: '/active-student-report', component:Active_student_List},
   {path: '/student-past-sessions-detail/:id', component:All_Student_Past_Session_Detail},
+  {path: '/profile-page', component:Ms_Mentor_Profile},
+  {path: '/Ms_edit-profile/:id', component:Ms_EditMentorProfile},
+  {path: '/student-mains-test-report/:id',component:Ms_Student_Mains_Report},
+
   {
     path: "/",
     exact: true,

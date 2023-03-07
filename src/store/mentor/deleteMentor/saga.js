@@ -40,8 +40,10 @@ function* mentorDelete({ payload: { user, history, mentor_id } }) {
         is_active: user.is_active,
       });
       if (response.type == "success") {
-        toast.success("Deleted Successfully", { autoClose: 3000 });
-        history.push("/mentor-list");
+        toast.success("Deleted Successfully", { autoClose: 2000 });
+        setTimeout(() => {
+          window.location.href = '/mentor-list';
+        }, 3000);
       } else {
         toast.success("Something went Wrong", { autoClose: 3000 });
         yield put(mentorDeleteApiError(response));

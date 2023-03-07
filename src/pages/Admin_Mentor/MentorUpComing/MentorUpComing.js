@@ -26,13 +26,12 @@ export default function MentorUpComing() {
     //   const currentDate = new Date();
     //   const formattedDate = new Intl.DateTimeFormat("en-US", options).format(currentDate);
 
-    let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-    let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+   
     console.log(Session, "all Session")
-    const event = new Date();
-    const jsonDate = localISOTime;
+    // const event = new Date();
+   
     // console.log(formattedDate, "today date in formatted")
-    console.log(jsonDate, "date time")
+    // console.log(jsonDate, "date time")
     // const todayVal = Session.filter(val => val.schedule_date_time == jsonDate).length
     // const upCompingVal = Session.filter(val => val.schedule_date_time > jsonDate).length
     // const attendantVal = Session.filter(val => val.schedule_date_time < jsonDate).length  
@@ -42,48 +41,51 @@ export default function MentorUpComing() {
     }, [dispatch]);
 
     const [todayVal, setTodayVal] = useState(0);
-  const [upcomingVal, setUpcomingVal] = useState(0);
-  const [attendedVal, setAttendedVal] = useState(0);
+    const [upcomingVal, setUpcomingVal] = useState(0);
+    const [attendedVal, setAttendedVal] = useState(0);
 
     useEffect(() => {
         const currentDate = new Date();
 
-    //     const todayVal = Session.filter(val => new Date(val.schedule_date_time) === currentDate)
-    // const upCompingVal = Session.filter(val => new Date(val.schedule_date_time) > currentDate)
-    // const attendantVal = Session.filter(val => new Date(val.schedule_date_time) < currentDate)   
+        let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+        const jsonDate = localISOTime;
         const todaySessions = Session.filter((val) => {
-          const sessionDate = new Date(val.schedule_date_time);
-          return (
-            sessionDate.getFullYear() === currentDate.getFullYear() &&
-            sessionDate.getMonth() === currentDate.getMonth() &&
-            sessionDate.getDate() === currentDate.getDate()
-          );
+            const sessionDate = new Date(val.schedule_date_time);
+            return (
+                sessionDate.getFullYear() === currentDate.getFullYear() &&
+                sessionDate.getMonth() === currentDate.getMonth() &&
+                sessionDate.getDate() === currentDate.getDate()
+            );
         });
         const upcomingSessions = Session.filter((val) => {
             const sessionDate = new Date(val.schedule_date_time);
             return (
-              sessionDate > currentDate &&
-              (
-                sessionDate.getFullYear() > currentDate.getFullYear() ||
-                sessionDate.getMonth() > currentDate.getMonth() ||
-                sessionDate.getDate() > currentDate.getDate()
-              )
-            //   sessionDate.getMonth() !== currentDate.getMonth() &&
-            //   sessionDate.getDate() > currentDate.getDate()
+                sessionDate > currentDate &&
+                (
+                    sessionDate.getFullYear() > currentDate.getFullYear() ||
+                    sessionDate.getMonth() > currentDate.getMonth() ||
+                    sessionDate.getDate() > currentDate.getDate()
+                )
             );
-          });
-        // const upcomingSessions = Session.filter((val) => {
-        //   const sessionDate = new Date(val.schedule_date_time);
-        //   return sessionDate > currentDate && sessionDate !== currentDate;
-        // });
-        const attendedSessions = Session.filter((val) => {
-          const sessionDate = new Date(val.schedule_date_time);
-          return sessionDate < currentDate;
         });
+        const attendedSessions = Session.filter((val) => {
+            if (!val.schedule_date_time) {
+              // Skip sessions with null schedule_date_time
+              return false;
+            }
+            const sessionDate = new Date(val.schedule_date_time);
+            return sessionDate < new Date();
+          });
+        // const attendedSessions = Session.filter((val) => {
+        //     const sessionDate = new Date(val.schedule_date_time);
+        //     return sessionDate < new Date();
+        // });
         setTodayVal(todaySessions.length);
         setUpcomingVal(upcomingSessions.length);
         setAttendedVal(attendedSessions.length);
-      }, [Session]);
+        console.log(attendedSessions, "currentDate")
+    }, [Session]);
 
     const [activeTab, setActiveTab] = useState('1');
     const [activityTab, setActivityTab] = useState('1');
@@ -94,8 +96,9 @@ export default function MentorUpComing() {
         }
     };
 
-      
-    console.log(todayVal, "schedule Date time",upcomingVal ,"compare date time",attendedVal, "filterVAl Session List in mentorUpcoming")
+    
+
+    console.log(todayVal, "schedule Date time", upcomingVal, "compare date time", attendedVal, "filterVAl Session List in mentorUpcoming")
     return (
         <React.Fragment>
             <Col xl={4} md={6}>
@@ -170,7 +173,7 @@ export default function MentorUpComing() {
                 <Card className="card-animate" >
                     <CardBody
                         className={classnames({ active: activeTab === '3' })}
-                        onClick={() => {                            
+                        onClick={() => {
                             console.log('In tab 3')
                             toggleTab('3');
                         }}

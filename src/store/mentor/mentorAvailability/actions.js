@@ -15,6 +15,7 @@ export const mentorAvailSuccess = user => {
   return {
     type: MENTOR_AVAIL_SUCCESS,
     payload: user,
+    response,
   };
 };
 
@@ -22,5 +23,6 @@ export const mentorAvailApiError = error => {
   return {
     type: MENTOR_AVAIL_API_ERROR,
     payload: error,
+    error,
   };
 };

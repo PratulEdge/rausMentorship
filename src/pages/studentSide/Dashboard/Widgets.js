@@ -5,6 +5,7 @@ import { Card, CardBody, Col, Row } from 'reactstrap';
 import { mentorDashDetail } from "../../../store/actions";
 import { studentDashDetail } from '../../../store/actions';
 import { useSelector, useDispatch } from "react-redux";
+import avatar1 from "../../../assets/images/users/avatar-1.jpg";
 
 const Widgets = () => {
 
@@ -38,11 +39,22 @@ const Widgets = () => {
                             <Col xl={4} md={6}>
                                 <Card className="card-animate">
                                     <CardBody>
-                                        <div className="align-items-center">
-                                            <span className='d-flex'><h5 className='stud-mg'>Full name:-</h5> {stu_val.first_name}{stu_val.last_name}</span>
-                                            <span className='d-flex'><h5 className='stud-mg'>Email Id:-</h5> {stu_val.email}</span>
-                                            <span className='d-flex'><h5 className='stud-mg'>Stud Id:-</h5> {stu_val.student_id}</span>
-                                        </div>
+                                        <Row>
+                                            <Col lg={4}>
+                                                <div className="align-items-center">
+                                                    <img className="rounded-circle wid" src={avatar1}
+                                                        alt="Header Avatar" />
+                                                </div>
+                                            </Col>
+                                            <Col lg={8}>
+                                                <div className="align-items-center">
+                                                    <span className='d-flex stu-detail'> {stu_val.name}</span>
+                                                    <span className='d-flex stu-sub-detail text-muted'>{stu_val.email}</span>
+                                                    <span className='d-flex stu-sub-detail text-muted'>{stu_val.student_id}</span>
+                                                </div>
+                                            </Col>
+                                        </Row>
+
                                     </CardBody>
                                 </Card>
                             </Col>
@@ -64,7 +76,6 @@ const Widgets = () => {
                                                         duration={4}
                                                     />
                                                 </span></h4>
-                                                <Link to="#" className="text-decoration-underline">View all</Link>
                                             </div>
                                         </div>
                                     </CardBody>
@@ -88,7 +99,7 @@ const Widgets = () => {
                                                         duration={4}
                                                     />
                                                 </span></h4>
-                                                <Link to="#" className="text-decoration-underline">View all</Link>
+                                                {/* <Link to="#" className="text-decoration-underline">View all</Link> */}
                                             </div>
                                         </div>
                                     </CardBody>

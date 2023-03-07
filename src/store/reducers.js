@@ -107,6 +107,8 @@ import PreTestListData from "./mentorSide/reports/pre_test_list/reducer";
 import Pre_stud_report_Data from "./mentorSide/reports/pre_stud_report/reducer";
 import Mnt_Sess_report_Data from "./mentorSide/reports/mentor_session_report/reducer";
 import Student_Past_Session_Data from "./mentorSide/reports/student_past_session/reducer";
+import Ms_mentor_profile_Data from "./mentorSide/mentor_Profile/reducer";
+import msMentorEditProfileData from "./mentorSide/edit_mentor_profile/reducer";
 
 
 //student side
@@ -120,6 +122,8 @@ import BookSession from "./studentSide/bookSession/reducer";
 
 const rootReducer = combineReducers({
     // new import
+    msMentorEditProfileData,
+    Ms_mentor_profile_Data,
     ResendOtpData,
     Student_Past_Session_Data,
     Mnt_Sess_report_Data,

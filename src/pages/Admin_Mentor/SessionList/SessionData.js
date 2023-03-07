@@ -140,7 +140,7 @@ const SessionData = (props) => {
                             <DropdownMenu className="dropdown-menu-end">
                                 <DropdownItem href={`/session-details/${cell}`}><i className="ri-eye-fill align-bottom me-2 text-muted"></i>View</DropdownItem>
                                 {/* <DropdownItem className='edit-item-btn' onClick={() => tog_varying2()}><i className="ri-pencil-fill align-bottom me-2 text-muted"></i>Edit</DropdownItem> */}
-                                <DropdownItem id={cell} onClick={(e) => tog_varying2(e)} className='remove-item-btn'> <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete </DropdownItem>
+                                <DropdownItem id={cell} onClick={(e) => tog_varying2(e)} className='remove-item-btn'> <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Cancel </DropdownItem>
 
                             </DropdownMenu>
                         </UncontrolledDropdown>)

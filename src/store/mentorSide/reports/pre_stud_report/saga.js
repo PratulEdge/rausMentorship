@@ -12,10 +12,11 @@ import { Prelims_Test_Report } from "../../../../API/mentor_auth";
 
 
 function* get_Pre_stud_report(payload) {
-  console.log(payload.payload.id ,"student report id inside function")
+  console.log(payload.payload ,"student report id inside function")
     console.log("inside function")
   try {
-    const response = yield call(Prelims_Test_Report, payload.payload.id); //payload.payload.id
+    const { email, examType, id } = payload.payload;
+    const response = yield call(Prelims_Test_Report, id,email,examType); //payload.payload.id
     yield put(Pre_stud_report_Success(PRE_STUD_REPORT, response));
     console.log(response, "response")
   } catch (error) {

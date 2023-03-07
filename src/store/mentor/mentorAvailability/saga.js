@@ -36,6 +36,8 @@ function* mentorAvailability({ payload: { user, history } }) {
 
     } else if (process.env.REACT_APP_DEFAULTAUTH === "backend") {
       const response = yield call(mentorAvail, {
+        // subject_expert: user.,
+        subject_expert_name: user.category,
         mentor_id: user.mentor_id,
         available_date_time: user.available_date_time,
         is_active: user.is_active,

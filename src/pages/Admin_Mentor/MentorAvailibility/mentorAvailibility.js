@@ -28,16 +28,9 @@ const MentorAvailibility = (props) => {
   const [modal_center, setmodal_center] = useState(false);
 
   const handleOptionSelect = (event) => {
-    console.log("mentor catogery");
     validation.handleChange(event);
     setSelectedOption(event.target.value);
   };
-  // const handleOptionMentor = (event) => {
-  //   console.log("mentor catogery");
-  //   validation.handleChange(event);
-  //   setSelectedOption(event.target.value);
-  // };
-
   const { subjectExpertData } = useSelector((state) => ({
     subjectExpertData: state.SubjectExpertData.subjectExpertData.detail,
   }));
@@ -115,14 +108,14 @@ const MentorAvailibility = (props) => {
       is_active: true || ''
     },
     validationSchema: Yup.object({
-      mentor_id: Yup.string().required("Please Enter a Mentor Name"),
+      mentor_id: Yup.string().required("Please Select Mentor Name"),
       available_date_time: Yup.string().required("Please Select Date and Time"),
     }),
     onSubmit: (values) => {
       console.log(values.is_active, "is active value")
       if (values.is_active === true) {
         console.log(values, "mentor Avail value submitting")
-        setAvailValue(availValue.concat(values))
+        setAvailValue([...new Set(availValue.concat(values))]);
         dispatch(mentorAvailUser(values, props.history));
       }
       else {
@@ -136,17 +129,34 @@ const MentorAvailibility = (props) => {
   const subjectFilterData = userData.filter((item1) => item1.subject_expert?.title === selectedOption && item1.is_active === true);
 
   //
+
+  // const handleDelete = (index) => {
+  //   setAvailValue(prevState =>
+  //     prevState.map((item, i) =>
+  //       i === index ? { ...item, is_active: false } : item
+  //     )
+  //   );
+  //   setmodal_center(false);
+  // };
+
+
   const handleDelete = (index) => {
     const newItems = [...availValue];
     newItems.splice(index, 1);
     setAvailValue(newItems);
     setmodal_center(false)
   }
+
   //
 
-  console.log(availValue, "avial value")
+  const handleDeleteValue = () =>{
+    tog_center();
+    console.log(availValue,  "avail value dffds")
 
+  }
   document.title = "Mentor Availibility | Rau's MentorShip - Mentor Availibility";
+
+  console.log(availValue, "avail value")
 
   return (
     <React.Fragment>
@@ -233,8 +243,9 @@ const MentorAvailibility = (props) => {
                             value={
                               validation.values.mentor_id || ""
                             }
+                            required
                           >
-                            <option value="Select name" >Select Name</option>
+                            <option value="">Select Name</option>
                             {subjectFilterData.map((item, key) => (
                               <React.Fragment key={key}>
                                 <option value={item.id} key={key}>{item.name}</option>
@@ -269,12 +280,10 @@ const MentorAvailibility = (props) => {
                   {availValue.map((printVal, key) => {
                     return (
                       <>
-
                         <Card key={key}>
                           <CardBody>
                             <div className='avail-dis'>
                               <div className='col-lg-3'>
-
                                 <h5 className="ps-0" scope="row"><span className='text-muted'>Mentor Name :</span></h5><h5>
                                   {(userData.filter((item1) => item1.id === printVal.mentor_id)).map((ewl) => {
                                     return (
@@ -284,23 +293,17 @@ const MentorAvailibility = (props) => {
                                 </h5>
                               </div>
                               <div className='col-lg-2'>
-
-                                <h5 className="ps-0" scope="row"><span className='text-muted'>Date :</span></h5><h5> {new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(dateTime))}</h5>
+                                <h5 className="ps-0" scope="row"><span className='text-muted'>Date :</span></h5><h5> {new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(printVal.available_date_time))}</h5>
                               </div>
                               <div className='col-lg-2'>
-
-
-                                <h5 className="ps-0" scope="row"><span className='text-muted'>Time :</span></h5><h5> {new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).format(new Date(dateTime))}</h5>
+                                <h5 className="ps-0" scope="row"><span className='text-muted'>Time :</span></h5><h5> {new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).format(new Date(printVal.available_date_time))}</h5>
                               </div>
                               <div className='col-lg-2'>
-
-
                                 <h5 className="ps-0" scope="row"><span className='text-muted'>Subject Expert :</span></h5><h5> {printVal.category}</h5>
                               </div>
                               <div className='col-lg-3'>
-                                <Button className="btn btn-success avil-btn" onClick={() => tog_center()} > Delete</Button>
+                                <Button className="btn btn-success avil-btn" onClick={() => handleDeleteValue()} > Delete</Button>
                               </div>
-
                             </div>
                           </CardBody>
                         </Card>
@@ -347,39 +350,6 @@ const MentorAvailibility = (props) => {
           </TabContent>
         </Container>
       </div>
-      {/* <Modal
-        isOpen={modal_center}
-        toggle={() => {
-          tog_center();
-        }}
-        centered
-      >
-        <ModalHeader className="modal-title" />
-
-        <ModalBody className="text-center p-5">
-          <Form onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit(e);
-            console.log("in submit")
-            return false;
-          }}
-            action="#">
-
-            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json"
-              trigger="loop" colors="primary:#121331,secondary:#08a88a" style={{ width: "120px", height: "120px" }}>
-            </lord-icon>
-            <div className="mt-4">
-              <h4 className="mb-3">Are you sure?</h4>
-              <p className="text-muted mb-4"> You won't be able to revert this!</p>
-              <div className="hstack gap-2 justify-content-center">
-                <Button to="#" type='submit' onClick={() => handleDelete(key)}  className="btn btn-success">Yes, delete it!</Button>  
-                <Button className='btn btn-danger' onClick={() => setmodal_center(false)}>Close</Button>
-
-              </div>
-            </div>
-          </Form>
-        </ModalBody>
-      </Modal> */}
     </React.Fragment>
   );
 };

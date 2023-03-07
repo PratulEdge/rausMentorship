@@ -26,7 +26,7 @@ const BaseExample = (props) => {
     const filteredData = user_data.filter(row =>
         (activeFilter === 'All' || String(row.is_active).toLowerCase().includes(activeFilter.toLowerCase())) &&
         (subjectFilter === 'All' || row.subject_expert?.title.toLowerCase().includes(subjectFilter.toLowerCase()))
-    );
+    ).sort((a, b) => new Date(b.updation_date_time) - new Date(a.updation_date_time));;
     const { subjectExpertData } = useSelector((state) => ({
         subjectExpertData: state.SubjectExpertData.subjectExpertData.detail,
     }));
@@ -34,7 +34,6 @@ const BaseExample = (props) => {
         tog_center()
         setMentor_id(event.target.id)
     };
-    console.log(mentor_id, "selected mentor id")
     const data = filteredData.map(((list, index) => [   ///icoList
         list.serial = index + 1,
         list.name,
@@ -51,14 +50,10 @@ const BaseExample = (props) => {
         initialValues: {
             is_active: 'false' || '',
         },
-        onSubmit: (values) => {
-            console.log("submit value")
-            // console.log(values, "Submit valuesas delete")            
+        onSubmit: (values) => {         
             dispatch(mentorDeleteUser(values, props.history, mentor_id));
         }
     });
-
-    console.log(filteredData, "filter Value sadffdf")
 
     useEffect(() => {
         dispatch(subjectExpert());
@@ -156,9 +151,7 @@ const BaseExample = (props) => {
                             <p className="text-muted mb-4"> You won't be able to revert this!</p>
                             <div className="hstack gap-2 justify-content-center">
                                 <Button to="#" type='submit' onClick={() => {
-                                    setmodal_center(false); setTimeout(function () {
-                                        window.location.reload();
-                                    }, 4000);
+                                    setmodal_center(false);
                                 }} className="btn btn-success">Yes, delete it!</Button>
                                 <Button className='btn btn-danger' onClick={() => setmodal_center(false)}>Close</Button>
 

@@ -6,17 +6,15 @@ import {
   preTestListSuccess,
   preTestListApiError
 } from "./actions"
-// import { Ms_studentProfile } from "../../../API/mentor_auth";
-// import { studentProfile } from "../../../API/auth";
-// import { Prelims_series } from "../../../../API/mentor_auth";
 import { Prelims_Test_List } from "../../../../API/mentor_auth";
 
 
 function* Ms_getPreTestList(payload) {
-  console.log(payload.payload.actionType ,"student id inside function")
+  console.log(payload.payload ,"student id test list inside function")
     console.log("inside function")
   try {
-    const response = yield call(Prelims_Test_List); //payload.payload.id
+    const { email, examType, series_id } = payload.payload;
+    const response = yield call(Prelims_Test_List,email, examType, series_id); //payload.payload.id
     yield put(preTestListSuccess(PRE_TEST_LIST, response));
     console.log(response, "response")
   } catch (error) {

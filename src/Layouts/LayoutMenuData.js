@@ -351,7 +351,7 @@ const Navdata = () => {
             subItems: [
                 {
                     id: "ecommerce",
-                    label: "Student Ecommerce",
+                    label: "Student Dashboard",
                     link: "/student-dashboard",
                     parentId: "dashboard",
                 },
