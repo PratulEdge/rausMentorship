@@ -130,6 +130,9 @@ const OtpAuth = (props) => {
                                                                 otpType="number"
                                                                 disabled={false}
                                                                 required
+                                                                invalid={
+                                                                    validation.touched.token && validation.errors.token ? true : false
+                                                                }
                                                             />
                                                             {validation.touched.token && validation.errors.token ? (
                                                                 <FormFeedback type="invalid">{validation.errors.token}</FormFeedback>
